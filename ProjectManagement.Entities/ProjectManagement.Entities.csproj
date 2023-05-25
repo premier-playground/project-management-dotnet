@@ -41,7 +41,16 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Enums\Level.cs" />
+    <Compile Include="Enums\Role.cs" />
+    <Compile Include="Models\Professor.cs" />
+    <Compile Include="Models\Project.cs" />
+    <Compile Include="Models\ProjectFile.cs" />
+    <Compile Include="Models\Student.cs" />
+    <Compile Include="Models\StudentProjectAssociation.cs" />
+    <Compile Include="Models\User.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
