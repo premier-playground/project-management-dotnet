@@ -4,10 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ProjectManagement.Entities.Models
+namespace ProjectManagement.Repositories
 {
-    public class ProjectFile
+    public class UserRepository
     {
-        public string Id { get; set; }
     }
 }
