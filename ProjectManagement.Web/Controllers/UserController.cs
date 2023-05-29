@@ -27,6 +27,12 @@ namespace ProjectManagement.Web.Controllers
                 // user = context.Students.FirstOrDefault(student => student.Id == 1);
             }
 
+            using (var context2 = new ProjectContext())
+            {
+                context2.Projects.Add(new Project("2", "Project 1", "description"));
+                context2.SaveChanges();
+            }
+
             return user;
             // return 
         }

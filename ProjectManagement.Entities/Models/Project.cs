@@ -14,5 +14,15 @@ namespace ProjectManagement.Entities.Models
         public DateTime CreatedAt { get; set; } 
         public Professor Coordinator { get; set; }
         public List<StudentProjectAssociation> StudentProjectAssociations { get; set; } = new List<StudentProjectAssociation>();
+
+        public Project(string id, string name, string description)
+        {
+            Id = id;
+            Name = name;
+            Description = description;
+            CreatedAt = DateTime.Now;
+            Coordinator = null;
+        }
     }
+    
 }
