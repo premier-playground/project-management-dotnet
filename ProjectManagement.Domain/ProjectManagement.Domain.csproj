@@ -163,8 +163,11 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DTO\ProfessorDTO.cs" />
+    <Compile Include="DTO\ProjectDTO.cs" />
     <Compile Include="DTO\StudentDTO.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Services\ProjectService.cs" />
     <Compile Include="Services\UserService.cs" />
   </ItemGroup>
   <ItemGroup>

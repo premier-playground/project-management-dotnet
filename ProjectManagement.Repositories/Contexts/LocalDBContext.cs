@@ -12,5 +12,6 @@ namespace ProjectManagement.Repositories.Contexts
     {
         public DbSet<Project> Projects { get; set; }
         public DbSet<Student> Students { get; set; }
+        public DbSet<Professor> Professors { get; set; }
     }
 }

@@ -23,6 +23,14 @@ namespace ProjectManagement.Entities.Models
             CreatedAt = DateTime.Now;
             Coordinator = null;
         }
+
+        public Project(string name, string description, Professor coordinator)
+        {
+            Name = name;
+            Description = description;
+            CreatedAt = DateTime.Now;
+            Coordinator = coordinator;
+        }
     }
     
 }

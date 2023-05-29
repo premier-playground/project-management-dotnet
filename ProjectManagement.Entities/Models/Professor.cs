@@ -17,5 +17,12 @@ namespace ProjectManagement.Entities.Models
             Field = field;
             Degree = degree;
         }
+
+        public Professor(string name, string email, string password, Role role, string field, string degree) : base(
+            name, email, password, role)
+        {
+            Field = field;
+            Degree = degree;
+        }
     }
 }

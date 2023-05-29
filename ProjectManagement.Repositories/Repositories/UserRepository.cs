@@ -72,5 +72,38 @@ namespace ProjectManagement.Repositories.Repositories
             Dispose(true);
             GC.SuppressFinalize(this);
         }
+
+        public Professor InsertProfessor(Professor professor)
+        {
+            Professor newProfessor = null;
+
+            using (var localDbContext = (LocalDBContext)_context)
+            {
+                newProfessor = localDbContext.Professors.Add(professor);
+                localDbContext.SaveChanges();
+            }
+
+            return newProfessor;
+        }
+
+        public void UpdateProfessor(Professor professor)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void DeleteProfessor(Professor professor)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IEnumerable<Professor> GetAllProfessors()
+        {
+            throw new NotImplementedException();
+        }
+
+        public Professor GetProfessorById(int id)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

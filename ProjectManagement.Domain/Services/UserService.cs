@@ -27,5 +27,13 @@ namespace ProjectManagement.Domain.Services
             return _userRepository.InsertStudent(student);
         }
 
+        public Professor CreateProfessor(ProfessorDTO professorDTO)
+        {
+            Professor professor = new Professor(professorDTO.Name, professorDTO.Email, professorDTO.Password,
+                professorDTO.Role, professorDTO.Field, professorDTO.Degree);
+
+            return _userRepository.InsertProfessor(professor);
+        }
+
     }
 }
