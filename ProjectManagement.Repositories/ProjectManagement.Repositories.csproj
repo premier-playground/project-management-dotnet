@@ -163,9 +163,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Configuration\SqlServerConfiguration.cs" />
-    <Compile Include="Contexts\ProjectContext.cs" />
-    <Compile Include="Contexts\StudentContext.cs" />
+    <Compile Include="Contexts\LocalDBContext.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="UserRepository.cs" />
   </ItemGroup>

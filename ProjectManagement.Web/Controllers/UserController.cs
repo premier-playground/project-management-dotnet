@@ -19,7 +19,7 @@ namespace ProjectManagement.Web.Controllers
         {
             User user = null;
 
-            using (var context = new StudentContext())
+            using (var context = new LocalDBContext())
             {
                 user = context.Students.Add(new Student(1, "Davi", "davi.sousa@ccc.ufcg.edu.br", "123456", Role.STUDENT, "UFCG"));
                 context.SaveChanges();
@@ -27,7 +27,7 @@ namespace ProjectManagement.Web.Controllers
                 // user = context.Students.FirstOrDefault(student => student.Id == 1);
             }
 
-            using (var context2 = new ProjectContext())
+            using (var context2 = new LocalDBContext())
             {
                 context2.Projects.Add(new Project("2", "Project 1", "description"));
                 context2.SaveChanges();
