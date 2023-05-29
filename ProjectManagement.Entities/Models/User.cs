@@ -26,6 +26,15 @@ namespace ProjectManagement.Entities.Models
             Role = role;
         }
 
+        protected User(string name, string email, string password, Role role)
+        {
+            Name = name;
+            Email = email;
+            Password = password;
+            Role = role;
+        }
+
+
         protected User()
         {
         }

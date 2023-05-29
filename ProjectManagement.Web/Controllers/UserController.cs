@@ -2,60 +2,42 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
-using System.Net.Http;
 using System.Web.Http;
+using ProjectManagement.Domain.Services;
 using ProjectManagement.Entities.Enums;
 using ProjectManagement.Entities.Models;
+using ProjectManagement.Repositories;
 using ProjectManagement.Repositories.Contexts;
+using ProjectManagement.Repositories.Repositories;
+using ProjectManagement.Domain.DTO;
 
 namespace ProjectManagement.Web.Controllers
 {
     public class UserController: ApiController
     {
-        // private ApiContext apiContext { get; set; }
+        private readonly UserService _userService;
 
-        // GET api/<controller>
-        public User Get()
+        public UserController ()
         {
-            User user = null;
+            this._userService = new UserService(new LocalDBContext());
+        }
 
-            using (var context = new LocalDBContext())
+        [HttpPost]
+        public IHttpActionResult CreateStudent(StudentDTO studentDto)
+        {
+            IHttpActionResult httpActionResult;
+            try
             {
-                user = context.Students.Add(new Student(1, "Davi", "davi.sousa@ccc.ufcg.edu.br", "123456", Role.STUDENT, "UFCG"));
-                context.SaveChanges();
-                // context.Students.All()
-                // user = context.Students.FirstOrDefault(student => student.Id == 1);
+                Student student = _userService.CreateStudent(studentDto);
+                httpActionResult = Ok(student);
             }
-
-            using (var context2 = new LocalDBContext())
+            catch (Exception)
             {
-                context2.Projects.Add(new Project("2", "Project 1", "description"));
-                context2.SaveChanges();
+                httpActionResult = BadRequest();
             }
-
-            return user;
-            // return 
+            
+            return httpActionResult;
         }
 
-        // GET api/<controller>/5
-        public string Get(int id)
-        {
-            return "value";
-        }
-
-        // POST api/<controller>
-        public void Post([FromBody] string value)
-        {
-        }
-
-        // PUT api/<controller>/5
-        public void Put(int id, [FromBody] string value)
-        {
-        }
-
-        // DELETE api/<controller>/5
-        public void Delete(int id)
-        {
-        }
     }
 }

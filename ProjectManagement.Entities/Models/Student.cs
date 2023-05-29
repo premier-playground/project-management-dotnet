@@ -16,6 +16,12 @@ namespace ProjectManagement.Entities.Models
             Institution = institution;
         }
 
+        public Student(string name, string email, string password, Role role, string institution) : base(name, email, password, role)
+        {
+            Institution = institution;
+        }
+
+
         public Student(): base() {}
     }
 }

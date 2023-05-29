@@ -218,6 +218,10 @@
     <Folder Include="Models\" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\ProjectManagement.Domain\ProjectManagement.Domain.csproj">
+      <Project>{EA1E7B9E-8B24-432E-8535-9DF3D1A6507F}</Project>
+      <Name>ProjectManagement.Domain</Name>
+    </ProjectReference>
     <ProjectReference Include="..\ProjectManagement.Entities\ProjectManagement.Entities.csproj">
       <Project>{019EAFF5-7C75-4D6E-AFFC-99D3D59A202A}</Project>
       <Name>ProjectManagement.Entities</Name>
