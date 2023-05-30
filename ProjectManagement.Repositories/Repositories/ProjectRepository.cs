@@ -43,7 +43,12 @@ namespace ProjectManagement.Repositories.Repositories
 
         public IEnumerable<Project> GetAllProjects()
         {
-            throw new NotImplementedException();
+           
+            using (var localDbContext = new LocalDBContext())
+            {
+                return localDbContext.Projects.ToList<Project>();
+                
+            }
         }
 
         public Project GetProjectById(int id)

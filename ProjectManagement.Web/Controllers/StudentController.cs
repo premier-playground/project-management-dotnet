@@ -38,5 +38,25 @@ namespace ProjectManagement.Web.Controllers
 
             return httpActionResult;
         }
+
+        [HttpGet]
+        public IHttpActionResult GetAllStudents()
+        {
+            IHttpActionResult httpActionResult;
+            try
+            {
+                IEnumerable<Student> projects = _userService.GetAllStudents();
+                httpActionResult = Ok(projects);
+
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.ToString());
+                httpActionResult = BadRequest();
+            }
+
+            return httpActionResult;
+        }
     }
 }
+   

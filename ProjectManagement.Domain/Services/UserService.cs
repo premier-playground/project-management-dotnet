@@ -27,12 +27,21 @@ namespace ProjectManagement.Domain.Services
             return _userRepository.InsertStudent(student);
         }
 
-        public Professor CreateProfessor(ProfessorDTO professorDTO)
+        public IEnumerable<Student> GetAllStudents()
+        {
+            return this._userRepository.GetAllStudents();
+        }
+
+    public Professor CreateProfessor(ProfessorDTO professorDTO)
         {
             Professor professor = new Professor(professorDTO.Name, professorDTO.Email, professorDTO.Password,
                 professorDTO.Role, professorDTO.Field, professorDTO.Degree);
 
             return _userRepository.InsertProfessor(professor);
+        }
+
+        public IEnumerable<Professor> GetAllProfessors() {
+            return this._userRepository.GetAllProfessors();
         }
 
     }

@@ -26,11 +26,6 @@ namespace ProjectManagement.Repositories.Repositories
             throw new NotImplementedException();
         }
 
-        public IEnumerable<Student> GetAllStudents()
-        {
-            throw new NotImplementedException();
-        }
-
         public Student GetStudentById(int id)
         {
             throw new NotImplementedException();
@@ -52,6 +47,17 @@ namespace ProjectManagement.Repositories.Repositories
         public void UpdateStudent(Student student)
         {
             throw new NotImplementedException();
+        }
+
+        public IEnumerable<Student> GetAllStudents()
+        {
+
+
+            using (var localDbContext = new LocalDBContext())
+            {
+                return localDbContext.Students.ToList<Student>();
+
+            }
         }
 
         private bool _disposed = false;
@@ -99,7 +105,14 @@ namespace ProjectManagement.Repositories.Repositories
 
         public IEnumerable<Professor> GetAllProfessors()
         {
-            throw new NotImplementedException();
+            
+
+            using (var localDbContext = new LocalDBContext())
+            {
+                return localDbContext.Professors.ToList<Professor>();
+                
+            }
+
         }
 
         public Professor GetProfessorById(int id)

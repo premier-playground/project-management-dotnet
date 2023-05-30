@@ -12,11 +12,11 @@ namespace ProjectManagement.Web.Controllers
 {
     public class ProjectController: ApiController
     {
-        private readonly ProjectService _userService;
+        private readonly ProjectService _projectService;
 
         public ProjectController()
         {
-            _userService = new ProjectService(new LocalDBContext());
+            _projectService = new ProjectService(new LocalDBContext());
         }
 
         [HttpPost]
@@ -25,7 +25,7 @@ namespace ProjectManagement.Web.Controllers
             IHttpActionResult httpActionResult;
             try
             {
-                Project project = _userService.CreateProject(projectDTO);
+                Project project = _projectService.CreateProject(projectDTO);
                 if (project == null)
                 {
                     httpActionResult = NotFound();
@@ -35,6 +35,25 @@ namespace ProjectManagement.Web.Controllers
                     httpActionResult = Ok(project);
                 }
                 
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.ToString());
+                httpActionResult = BadRequest();
+            }
+
+            return httpActionResult;
+        }
+
+        [HttpGet]
+        public IHttpActionResult GetAllProjects()
+        {
+            IHttpActionResult httpActionResult;
+            try
+            {
+                IEnumerable<Project> projects = _projectService.GetAllProjects();
+                httpActionResult = Ok(projects);
+
             }
             catch (Exception e)
             {
