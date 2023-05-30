@@ -44,5 +44,15 @@ namespace ProjectManagement.Web.Controllers
 
             return httpActionResult;
         }
+
+
+        [HttpPost]
+        [Route("{id}")]
+        public IHttpActionResult addStudentToProject([FromBody] StudentProjectAssociationDTO studentProjectAssociation, int id)
+        {
+            
+
+            return Ok(studentProjectAssociation);
+        }
     }
 }

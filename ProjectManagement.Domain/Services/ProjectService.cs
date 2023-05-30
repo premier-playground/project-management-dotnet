@@ -34,5 +34,23 @@ namespace ProjectManagement.Domain.Services
 
             return newProject;
         }
+
+
+        public ProjectDTO AddStudentToProject(StudentProjectAssociationDTO studentProjectAssociationDTO, int projectId)
+        {
+            Student student = this._userRepository.GetStudentById(studentProjectAssociationDTO.StudentId);
+
+            StudentProjectAssociation studentProjectAssociation = new StudentProjectAssociation(
+                student , studentProjectAssociationDTO.Level, studentProjectAssociationDTO.AddedAt
+            );
+
+            Project project = this._projectRepository.GetProjectById(projectId);
+
+            project.StudentProjectAssociations.Add(studentProjectAssociation);
+
+            this._projectRepository.UpdateProject(project);
+
+            return null;
+        }
     }
 }
