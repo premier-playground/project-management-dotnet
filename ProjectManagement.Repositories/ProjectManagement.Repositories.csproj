@@ -158,14 +158,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Contexts\LocalDBContext.cs" />
-    <Compile Include="Migrations\202305301242033_InitialCreate.cs" />
-    <Compile Include="Migrations\202305301242033_InitialCreate.designer.cs">
-      <DependentUpon>202305301242033_InitialCreate.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\202305301247420_init.cs" />
-    <Compile Include="Migrations\202305301247420_init.designer.cs">
-      <DependentUpon>202305301247420_init.cs</DependentUpon>
-    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repositories\IProjectRepository.cs" />
@@ -182,14 +174,6 @@
       <Project>{019EAFF5-7C75-4D6E-AFFC-99D3D59A202A}</Project>
       <Name>ProjectManagement.Entities</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Migrations\202305301242033_InitialCreate.resx">
-      <DependentUpon>202305301242033_InitialCreate.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202305301247420_init.resx">
-      <DependentUpon>202305301247420_init.cs</DependentUpon>
-    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

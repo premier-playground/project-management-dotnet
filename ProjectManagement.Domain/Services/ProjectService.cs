@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using ProjectManagement.Domain.DTO;
 using ProjectManagement.Entities.Models;
+using ProjectManagement.Domain.Mappers;
 
 namespace ProjectManagement.Domain.Services
 {
@@ -14,11 +15,13 @@ namespace ProjectManagement.Domain.Services
     {
         private IProjectRepository _projectRepository;
         private IUserRepository _userRepository;
+        private ProjectMapper _mapper;
 
         public ProjectService(DbContext locaDbContext)
         {
             _projectRepository = new ProjectRepository(locaDbContext);
             _userRepository = new UserRepository(locaDbContext);
+            _mapper = new ProjectMapper();
         }
 
         public Project CreateProject(ProjectDTO projectDto)
@@ -50,7 +53,7 @@ namespace ProjectManagement.Domain.Services
 
             this._projectRepository.UpdateProject(project);
 
-            return null;
+            return this._mapper.MapToProjectDTO(project);
         }
     }
 }

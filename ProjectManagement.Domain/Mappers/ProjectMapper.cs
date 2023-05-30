@@ -23,5 +23,15 @@ namespace ProjectManagement.Domain.Mappers
         }
 
 
+        public ProjectDTO MapToProjectDTO(Project project)
+        {
+            return configuration.CreateMapper().Map<ProjectDTO>(project);
+        }
+
+
+        public Project MapFromProjectDTO(ProjectDTO projectDTO)
+        {
+            return configuration.CreateMapper().Map<Project>(projectDTO);
+        }
     }
 }
