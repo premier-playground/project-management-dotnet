@@ -12,8 +12,8 @@ namespace ProjectManagement.Entities.Models
         public string Field { get; set; }
         public string Degree { get; set; }
 
-        public Professor(string name, string email, string password, Role role, string field, string degree) : base(
-            name, email, password, role)
+        public Professor(string name, string email, Role role, string field, string degree) : base(
+            name, email, role)
         {
             Field = field;
             Degree = degree;

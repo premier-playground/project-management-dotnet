@@ -8,8 +8,8 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using ProjectManagement.Domain.DTO;
 using ProjectManagement.Entities.Models;
+using ProjectManagement.Repositories;
 using ProjectManagement.Repositories.Contexts;
-using ProjectManagement.Repositories.Manager;
 using ProjectManagement.Repositories.Repositories;
 
 namespace ProjectManagement.Domain.Services
@@ -27,22 +27,33 @@ namespace ProjectManagement.Domain.Services
         {
             Student student = new Student(studentDTO.Name, studentDTO.Email, studentDTO.Role, studentDTO.Institution);
 
-            var userStore = new UserStore<User>();
-            var manager = new AppUserManager(userStore);
+            var store = new ApplicationUserStore(new LocalDBContext());
+            var userManager = new ApplicationUserManager(store);
+            var result = userManager.Create(student, studentDTO.Password);
 
-            IdentityUser user = (IdentityUser)student;
+            if (result.Succeeded)
+            {
+                return student;
+            }
 
-            IdentityResult identityResult = manager.Create(user, studentDTO.Password);
-            
-            return _userRepository.InsertStudent(student);
+            return null;
         }
 
         public Professor CreateProfessor(ProfessorDTO professorDTO)
         {
-            Professor professor = new Professor(professorDTO.Name, professorDTO.Email, professorDTO.Password,
+            Professor professor = new Professor(professorDTO.Name, professorDTO.Email,
                 professorDTO.Role, professorDTO.Field, professorDTO.Degree);
 
-            return _userRepository.InsertProfessor(professor);
+            var store = new ApplicationUserStore(new LocalDBContext());
+            var userManager = new ApplicationUserManager(store);
+            var result = userManager.Create(professor, professorDTO.Password);
+
+            if (result.Succeeded)
+            {
+                return professor;
+            }
+
+            return null;
         }
 
     }

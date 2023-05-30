@@ -178,8 +178,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="App_Start\IdentityConfig.cs" />
     <Compile Include="Contexts\LocalDBContext.cs" />
-    <Compile Include="Manager\AppUserManager.cs" />
     <Compile Include="Migrations\202305301611502_init.cs" />
     <Compile Include="Migrations\202305301611502_init.designer.cs">
       <DependentUpon>202305301611502_init.cs</DependentUpon>
