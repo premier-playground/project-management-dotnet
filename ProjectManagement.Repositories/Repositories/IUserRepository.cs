@@ -13,12 +13,12 @@ namespace ProjectManagement.Repositories.Repositories
         void UpdateStudent(Student student);
         void DeleteStudent(Student student);
         IEnumerable<Student> GetAllStudents();
-        Student GetStudentById(int id);
+        Student GetStudentById(string id);
 
         Professor InsertProfessor(Professor professor);
         void UpdateProfessor(Professor professor);
         void DeleteProfessor(Professor professor);
         IEnumerable<Professor> GetAllProfessors();
-        Professor GetProfessorById(int id);
+        Professor GetProfessorById(string id);
     }
 }

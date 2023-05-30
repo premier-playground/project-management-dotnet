@@ -31,7 +31,7 @@ namespace ProjectManagement.Repositories.Repositories
             throw new NotImplementedException();
         }
 
-        public Student GetStudentById(int id)
+        public Student GetStudentById(string id)
         {
             throw new NotImplementedException();
         }
@@ -102,7 +102,7 @@ namespace ProjectManagement.Repositories.Repositories
             throw new NotImplementedException();
         }
 
-        public Professor GetProfessorById(int id)
+        public Professor GetProfessorById(string id)
         {
             Professor professor;
 

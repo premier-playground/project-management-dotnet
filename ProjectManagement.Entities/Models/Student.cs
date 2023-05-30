@@ -11,12 +11,12 @@ namespace ProjectManagement.Entities.Models
     {
         public string Institution { get; set; }
 
-        public Student(int id, string name, string email, string password, Role role, string institution) : base(id, name, email, password, role)
+        public Student(string name, string email, string password, Role role, string institution) : base(name, email, password, role)
         {
             Institution = institution;
         }
 
-        public Student(string name, string email, string password, Role role, string institution) : base(name, email, password, role)
+        public Student(string name, string email, Role role, string institution) : base(name, email, role)
         {
             Institution = institution;
         }

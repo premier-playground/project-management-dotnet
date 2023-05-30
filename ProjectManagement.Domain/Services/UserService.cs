@@ -4,9 +4,12 @@ using System.Data.Entity;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.EntityFramework;
 using ProjectManagement.Domain.DTO;
 using ProjectManagement.Entities.Models;
 using ProjectManagement.Repositories.Contexts;
+using ProjectManagement.Repositories.Manager;
 using ProjectManagement.Repositories.Repositories;
 
 namespace ProjectManagement.Domain.Services
@@ -22,7 +25,14 @@ namespace ProjectManagement.Domain.Services
 
         public Student CreateStudent(StudentDTO studentDTO)
         {
-            Student student = new Student(studentDTO.Name, studentDTO.Email, studentDTO.Password, studentDTO.Role, studentDTO.Institution);
+            Student student = new Student(studentDTO.Name, studentDTO.Email, studentDTO.Role, studentDTO.Institution);
+
+            var userStore = new UserStore<User>();
+            var manager = new AppUserManager(userStore);
+
+            IdentityUser user = (IdentityUser)student;
+
+            IdentityResult identityResult = manager.Create(user, studentDTO.Password);
             
             return _userRepository.InsertStudent(student);
         }

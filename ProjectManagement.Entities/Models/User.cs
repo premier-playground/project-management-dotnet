@@ -5,37 +5,34 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.AspNet.Identity.EntityFramework;
 using ProjectManagement.Entities.Enums;
 
 namespace ProjectManagement.Entities.Models
 {
-    public abstract class User
+    public abstract class User: IdentityUser
     {
-        [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int Id { get; set; }
-        public string Name { get; set; }
-        public string Email { get; set; }
-        public string Password { get; set; }
+        //[Key]
+        //[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        //public int UserId { get; set; }
+        //public string Email { get; set; }
+        //public string Password { get; set; }
         public Role Role { get; set; }
-
-        protected User(int id, string name, string email, string password, Role role)
-        {
-            Id = id;
-            Name = name;
-            Email = email;
-            Password = password;
-            Role = role;
-        }
 
         protected User(string name, string email, string password, Role role)
         {
-            Name = name;
-            Email = email;
-            Password = password;
+            //Name = name;
+            //Email = email;
+            //Password = password;
             Role = role;
         }
 
+        protected User(string name, string email, Role role)
+        {
+            UserName = name;
+            Email = email;
+            Role = role;
+        }
 
         protected User()
         {

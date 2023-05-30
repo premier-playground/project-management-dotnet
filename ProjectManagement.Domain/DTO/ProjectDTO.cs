@@ -11,6 +11,6 @@ namespace ProjectManagement.Domain.DTO
     {
         public string Name { get; set; }
         public string Description { get; set; }
-        public int CoordinatorId { get; set; }
+        public string CoordinatorId { get; set; }
     }
 }

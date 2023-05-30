@@ -7,13 +7,13 @@ namespace ProjectManagement.Repositories.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.4.4")]
-    public sealed partial class init : IMigrationMetadata
+    public sealed partial class pending_changes : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(init));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(pending_changes));
         
         string IMigrationMetadata.Id
         {
-            get { return "202305301247420_init"; }
+            get { return "202305301805562_pending_changes"; }
         }
         
         string IMigrationMetadata.Source
