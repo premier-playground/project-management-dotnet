@@ -28,7 +28,7 @@ namespace ProjectManagement.Web.Controllers
                 Professor professor = _userService.CreateProfessor(professorDto);
                 httpActionResult = Ok(professor);
             }
-            catch (Exception)
+            catch (Exception e)
             {
                 httpActionResult = BadRequest();
             }

@@ -1,17 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data.Entity;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Data.Entity;
 using ProjectManagement.Entities.Models;
 
 namespace ProjectManagement.Repositories.Contexts
 {
     public class LocalDBContext: DbContext
     {
-        public DbSet<Project> Projects { get; set; }
-        public DbSet<Student> Students { get; set; }
-        public DbSet<Professor> Professors { get; set; }
+        public System.Data.Entity.DbSet<Project> Projects { get; set; }
+        public System.Data.Entity.DbSet<Student> Students { get; set; }
+        public System.Data.Entity.DbSet<Professor> Professors { get; set; }
     }
 }

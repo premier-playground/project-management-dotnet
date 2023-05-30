@@ -22,7 +22,7 @@ namespace ProjectManagement.Repositories.Repositories
         {
             Project newProject = null;
 
-            using (var localDbContext = (LocalDBContext)_context)
+            using (var localDbContext = new LocalDBContext())
             {
                 newProject = localDbContext.Projects.Add(project);
                 localDbContext.SaveChanges();

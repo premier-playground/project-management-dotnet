@@ -1,19 +1,7 @@
-﻿using Microsoft.Extensions.DependencyInjection;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net.Http.Formatting;
-using System.Web.Http;
-using System.Web.Http.Dependencies;
+﻿using System.Web.Http;
 using System.Web.Mvc;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Infrastructure;
-using Microsoft.EntityFrameworkCore.InMemory.Infrastructure.Internal;
-using ProjectManagement.Repositories.Contexts;
-using System.Web.Services.Description;
-using Unity;
-using Unity.Lifetime;
-using Unity.WebApi;
+using ProjectManagement.Web.Controllers;
+using Swashbuckle.Application;
 using ServiceCollection = Microsoft.Extensions.DependencyInjection.ServiceCollection;
 
 namespace ProjectManagement.Web

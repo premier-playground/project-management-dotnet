@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
+using System.Data.Entity.Core.Metadata.Edm;
 using System.Linq;
 using System.Runtime.Remoting.Contexts;
 using System.Text;
@@ -39,7 +40,7 @@ namespace ProjectManagement.Repositories.Repositories
         {
             Student newStudent = null;
 
-            using (var localDbContext = (LocalDBContext) _context)
+            using (var localDbContext = new LocalDBContext())
             {
                 newStudent = localDbContext.Students.Add(student);
                 localDbContext.SaveChanges();
@@ -77,7 +78,7 @@ namespace ProjectManagement.Repositories.Repositories
         {
             Professor newProfessor = null;
 
-            using (var localDbContext = (LocalDBContext)_context)
+            using (var localDbContext = new LocalDBContext())
             {
                 newProfessor = localDbContext.Professors.Add(professor);
                 localDbContext.SaveChanges();
@@ -103,7 +104,14 @@ namespace ProjectManagement.Repositories.Repositories
 
         public Professor GetProfessorById(int id)
         {
-            throw new NotImplementedException();
+            Professor professor;
+
+            using (var localDbContext = new LocalDBContext())
+            {
+                professor = localDbContext.Professors.FirstOrDefault(p => p.Id == id);
+            }
+
+            return professor;
         }
     }
 }

@@ -24,5 +24,7 @@ namespace ProjectManagement.Entities.Models
             Field = field;
             Degree = degree;
         }
+
+        public Professor(): base() { }
     }
 }
