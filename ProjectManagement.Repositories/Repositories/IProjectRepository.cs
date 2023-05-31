@@ -10,7 +10,7 @@ namespace ProjectManagement.Repositories.Repositories
     public interface IProjectRepository: IDisposable
     {
         Project InsertProject(Project project);
-        void UpdateProject(Project project);
+        Project UpdateProject(Project project, int projectId);
         void DeleteProject(Project project);
         IEnumerable<Project> GetAllProjects();
         Project GetProjectById(int id);

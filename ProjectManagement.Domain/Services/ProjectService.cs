@@ -51,9 +51,16 @@ namespace ProjectManagement.Domain.Services
 
             project.StudentProjectAssociations.Add(studentProjectAssociation);
 
-            this._projectRepository.UpdateProject(project);
+            this._projectRepository.UpdateProject(project, projectId);
 
             return this._mapper.MapToProjectDTO(project);
+        }
+
+        public Project UpdateProject(ProjectDTO projectDto, int projectId)
+        {
+            Project project = new Project();
+            project = _projectRepository.UpdateProject(project, projectId);
+            return project;
         }
     }
 }

@@ -36,9 +36,18 @@ namespace ProjectManagement.Repositories.Repositories
             return newProject;
         }
 
-        public void UpdateProject(Project project)
+        public Project UpdateProject(Project project, int projectId)
         {
-            throw new NotImplementedException();
+            Project newProject = null;
+            using (var context = new LocalDBContext())
+            {
+                var retrievedProject = context.Projects.FirstOrDefault(p => p.Id == projectId);
+                retrievedProject.Name = project.Name;
+                retrievedProject.Description = project.Description;
+                retrievedProject.Coordinator = project.Coordinator;
+                context.SaveChanges();
+            }
+            return newProject;
         }
 
         public void DeleteProject(Project project)

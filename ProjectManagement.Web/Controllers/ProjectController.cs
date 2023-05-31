@@ -68,5 +68,26 @@ namespace ProjectManagement.Web.Controllers
             ProjectDTO result = this._projectService.AddStudentToProject(studentProjectAssociation, id);
             return Ok(result);
         }
+
+        [Route("project/{id}")]
+        [HttpPatch]
+        public IHttpActionResult UpdateProject(ProjectDTO projectDTO, int id)
+        {
+            Project project = _projectService.UpdateProject(projectDTO, id);
+            return Ok(new
+            {
+                project.Id,
+                project.Name,
+                project.Description,
+                Coordinator = new
+                {
+                    project.Coordinator.Id,
+                    project.Coordinator.UserName,
+                    project.Coordinator.Email,
+                    project.Coordinator.Degree,
+                    project.Coordinator.Field
+                }
+            });
+        }
     }
 }
