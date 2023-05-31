@@ -6,7 +6,6 @@ using System.Web.Services.Description;
 using Microsoft.AspNet.Identity.Owin;
 using ProjectManagement.Repositories;
 
-
 namespace ProjectManagement.Web.Controllers
 {
     public class LoginController: ApiController

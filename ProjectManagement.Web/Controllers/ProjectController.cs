@@ -12,11 +12,11 @@ namespace ProjectManagement.Web.Controllers
 {
     public class ProjectController: ApiController
     {
-        private readonly ProjectService _userService;
+        private readonly ProjectService _projectService;
 
         public ProjectController()
         {
-            _userService = new ProjectService(new LocalDBContext());
+            _projectService = new ProjectService(new LocalDBContext());
         }
 
         [HttpPost]
@@ -26,7 +26,7 @@ namespace ProjectManagement.Web.Controllers
             IHttpActionResult httpActionResult;
             try
             {
-                Project project = _userService.CreateProject(projectDTO);
+                Project project = _projectService.CreateProject(projectDTO);
                 if (project == null)
                 {
                     httpActionResult = NotFound();
@@ -57,6 +57,16 @@ namespace ProjectManagement.Web.Controllers
             }
 
             return httpActionResult;
+        }
+
+
+        [Route("project/{id}")]
+        [HttpPost]
+        public IHttpActionResult addStudentToProject([FromBody] StudentProjectAssociationDTO studentProjectAssociation, int id)
+        {
+            ProjectDTO result = this._projectService.AddStudentToProject(studentProjectAssociation, id);
+
+            return Ok(result);
         }
     }
 }
