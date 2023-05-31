@@ -20,7 +20,7 @@ namespace ProjectManagement.Web.Controllers
         }
 
         [HttpPost]
-        [Authorize]
+        [FilterConfig.ProfessorClaimsAuthorize]
         public IHttpActionResult CreateProject(ProjectDTO projectDTO)
         {
             IHttpActionResult httpActionResult;
@@ -62,10 +62,10 @@ namespace ProjectManagement.Web.Controllers
 
         [Route("project/{id}")]
         [HttpPost]
+        [FilterConfig.ProfessorClaimsAuthorize]
         public IHttpActionResult addStudentToProject([FromBody] StudentProjectAssociationDTO studentProjectAssociation, int id)
         {
             ProjectDTO result = this._projectService.AddStudentToProject(studentProjectAssociation, id);
-
             return Ok(result);
         }
     }

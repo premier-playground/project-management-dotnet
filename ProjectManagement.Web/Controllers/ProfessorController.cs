@@ -20,6 +20,7 @@ namespace ProjectManagement.Web.Controllers
         }
 
         [HttpPost]
+        [AllowAnonymous]
         public IHttpActionResult CreateProfessor(ProfessorDTO professorDto)
         {
             IHttpActionResult httpActionResult;

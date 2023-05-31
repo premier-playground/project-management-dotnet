@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
+using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNet.Identity;
@@ -31,12 +32,16 @@ namespace ProjectManagement.Domain.Services
             var userManager = new ApplicationUserManager(store);
             var result = userManager.Create(student, studentDTO.Password);
 
-            if (result.Succeeded)
-            {
-                return student;
-            }
+            if (!result.Succeeded) return null;
 
-            return null;
+            var userToAddRole = userManager.FindByName(student.UserName);
+            if (userToAddRole == null) return null;
+
+            var claimResult = userManager.AddClaim(student.Id, new Claim("role", "STUDENT"));
+            if (!claimResult.Succeeded) return null;
+
+            var identityResult = userManager.AddToRole(userToAddRole.Id, "STUDENT");
+            return identityResult.Succeeded ? student : null;
         }
 
         public Professor CreateProfessor(ProfessorDTO professorDTO)
@@ -48,12 +53,16 @@ namespace ProjectManagement.Domain.Services
             var userManager = new ApplicationUserManager(store);
             var result = userManager.Create(professor, professorDTO.Password);
 
-            if (result.Succeeded)
-            {
-                return professor;
-            }
+            if (!result.Succeeded) return null;
 
-            return null;
+            var userToAddRole = userManager.FindByName(professor.UserName);
+            if (userToAddRole == null) return null;
+
+            var claimResult = userManager.AddClaim(professor.Id, new Claim("role", "PROFESSOR"));
+            if (!claimResult.Succeeded) return null;
+
+            var identityResult = userManager.AddToRole(userToAddRole.Id, "PROFESSOR");
+            return identityResult.Succeeded ? professor : null;
         }
 
     }
