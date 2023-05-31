@@ -20,6 +20,7 @@ namespace ProjectManagement.Web.Controllers
         }
 
         [HttpPost]
+        [Authorize]
         public IHttpActionResult CreateProject(ProjectDTO projectDTO)
         {
             IHttpActionResult httpActionResult;
@@ -32,7 +33,20 @@ namespace ProjectManagement.Web.Controllers
                 }
                 else
                 {
-                    httpActionResult = Ok(project);
+                    httpActionResult = Ok(new
+                    {
+                        project.Id,
+                        project.Name,
+                        project.Description,
+                        Coordinator = new
+                        {
+                            project.Coordinator.Id,
+                            project.Coordinator.UserName,
+                            project.Coordinator.Email,
+                            project.Coordinator.Degree,
+                            project.Coordinator.Field
+                        }
+                    });
                 }
                 
             }

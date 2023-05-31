@@ -24,7 +24,12 @@ namespace ProjectManagement.Repositories.Repositories
 
             using (var localDbContext = new LocalDBContext())
             {
+                var professorId = project.Coordinator.Id;
+                project.Coordinator = null;
                 newProject = localDbContext.Projects.Add(project);
+                localDbContext.SaveChanges();
+
+                newProject.Coordinator = localDbContext.Professors.FirstOrDefault(p => p.Id == professorId);
                 localDbContext.SaveChanges();
             }
 
