@@ -46,4 +46,37 @@ namespace ProjectManagement.Repositories
             return new ApplicationSignInManager(context.GetUserManager<ApplicationUserManager>(), context.Authentication);
         }
     }
+    public class UserSecurityTokenAuthentication
+    {
+        private ApplicationUserManager ApplicationUserManager { get; set; }
+
+        public UserSecurityTokenAuthentication(ApplicationUserManager applicationUserManager)
+        {
+            ApplicationUserManager = applicationUserManager;
+        }
+
+        private bool VerifyPassword(string hashedPassword, string password)
+        {
+            var result = ApplicationUserManager.PasswordHasher.VerifyHashedPassword(hashedPassword, password);
+            return result == PasswordVerificationResult.Success;
+        }
+
+        public bool Login(string userName, string password)
+        {
+            using (LocalDBContext context = new LocalDBContext())
+            {
+                var result = false;
+                var user = context.Users.FirstOrDefault(u => u.UserName.Equals(userName));
+                if (user != null)
+                {
+                    if (VerifyPassword(user.PasswordHash, password))
+                    {
+                        result = true;
+                    }
+                }
+
+                return result;
+            }
+        }
+    }
 }

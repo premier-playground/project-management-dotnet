@@ -26,7 +26,7 @@ namespace ProjectManagement.Web.Controllers
 
         [HttpPost]
         [AllowAnonymous]
-        public IHttpActionResult Login(LoginDto loginDto)
+        public IHttpActionResult Login(LoginDto loginDto, string returnUrl = null)
         {
             var result = _signInManager.PasswordSignIn(loginDto.Username, loginDto.Password, true, shouldLockout: false);
             if (result == SignInStatus.Success)
