@@ -9,8 +9,7 @@
     {
         public Configuration()
         {
-            AutomaticMigrationsEnabled = false;
-            ContextKey = "ProjectManagement.Repositories.Contexts.LocalDBContext";
+            AutomaticMigrationsEnabled = true;
         }
 
         protected override void Seed(ProjectManagement.Repositories.Contexts.LocalDBContext context)

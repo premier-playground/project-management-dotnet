@@ -31,7 +31,7 @@ namespace ProjectManagement.Web.Controllers
                 Student student = _userService.CreateStudent(studentDto);
                 httpActionResult = Ok(student);
             }
-            catch (Exception)
+            catch (Exception e)
             {
                 httpActionResult = BadRequest();
             }
