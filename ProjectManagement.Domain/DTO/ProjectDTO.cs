@@ -9,6 +9,7 @@ namespace ProjectManagement.Domain.DTO
 {
     public class ProjectDTO
     {
+        public int Id { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
         public int CoordinatorId { get; set; }
