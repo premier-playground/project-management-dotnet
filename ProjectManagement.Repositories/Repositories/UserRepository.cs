@@ -33,7 +33,14 @@ namespace ProjectManagement.Repositories.Repositories
 
         public Student GetStudentById(string id)
         {
-            throw new NotImplementedException();
+            Student student;
+
+            using (var localDbContext = new LocalDBContext())
+            {
+                student = localDbContext.Students.FirstOrDefault(p => p.Id == id);
+            }
+
+            return student;
         }
 
         public Student InsertStudent(Student student)

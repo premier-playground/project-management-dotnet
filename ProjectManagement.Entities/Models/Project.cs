@@ -34,6 +34,7 @@ namespace ProjectManagement.Entities.Models
             Description = description;
             CreatedAt = DateTime.Now;
             Coordinator = coordinator;
+            StudentProjectAssociations = new HashSet<StudentProjectAssociation>();
         }
 
         public Project() { }

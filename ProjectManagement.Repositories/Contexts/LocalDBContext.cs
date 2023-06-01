@@ -12,6 +12,7 @@ namespace ProjectManagement.Repositories.Contexts
         public DbSet<Project> Projects { get; set; }
         public DbSet<Student> Students { get; set; }
         public DbSet<Professor> Professors { get; set; }
+        public DbSet<StudentProjectAssociation> StudentProjectAssociations { get; set; }
 
         public LocalDBContext() : base("name=DefaultConnection")
         {
@@ -20,6 +21,7 @@ namespace ProjectManagement.Repositories.Contexts
             var roleManager = new RoleManager<IdentityRole>(roleStore);
             roleManager.Create(new IdentityRole("PROFESSOR"));
             roleManager.Create(new IdentityRole("STUDENT"));
+            this.Configuration.LazyLoadingEnabled = true;
         }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)

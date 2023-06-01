@@ -12,7 +12,7 @@ namespace ProjectManagement.Domain.DTO
     {
         public string StudentId { get; set; }
         public Level Level { get; set; }
-        public DateTime AddedAt { get; set; }
+        //public DateTime AddedAt { get; set; }
 
     }
 }

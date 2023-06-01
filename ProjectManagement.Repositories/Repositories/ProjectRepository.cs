@@ -4,6 +4,7 @@ using System.Data.Entity;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using ProjectManagement.Entities.Enums;
 using ProjectManagement.Entities.Models;
 using ProjectManagement.Repositories.Contexts;
 
@@ -64,6 +65,47 @@ namespace ProjectManagement.Repositories.Repositories
         }
 
         public Project GetProjectById(int id)
+        {
+            Project project = null;
+            using (var context = new LocalDBContext())
+            {
+                project = context.Projects.FirstOrDefault(p => p.Id == id);
+            }
+            return project;
+        }
+
+        public Project AddStudent(int projectId, string studentId, Level level)
+        {
+            Project project = null;
+            using (var context = new LocalDBContext())
+            {
+                var retrievedProject = context.Projects.FirstOrDefault(p => p.Id == projectId);
+                if (retrievedProject == null) return null;
+
+                var retrievedStudent = context.Students.FirstOrDefault(s => s.Id == studentId);
+                if (retrievedStudent == null) return null;
+
+                //var createdStudentProjectAssociation = context.StudentProjectAssociations.Add(new StudentProjectAssociation(level));
+                //context.SaveChanges();
+
+                //createdStudentProjectAssociation.Project = retrievedProject;
+                //createdStudentProjectAssociation.Student = retrievedStudent;
+                //context.SaveChanges();
+
+                //retrievedProject.StudentProjectAssociations.Add(createdStudentProjectAssociation);
+                retrievedProject.StudentProjectAssociations.Add(new StudentProjectAssociation(level) { Student = retrievedStudent });
+                project = context.Projects
+                    .Include(p => p.Coordinator)
+                    .Include(p => p.StudentProjectAssociations)
+                    .Include(p => p.StudentProjectAssociations.Select(spa => spa.Student))
+                    .FirstOrDefault(p => p.Id == retrievedProject.Id);
+                context.SaveChanges();
+            }
+
+            return project;
+        }
+
+        public Project RemoveStudent(int projectId, string studentId)
         {
             throw new NotImplementedException();
         }

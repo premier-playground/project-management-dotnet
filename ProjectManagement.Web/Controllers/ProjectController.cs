@@ -1,6 +1,8 @@
 ﻿using ProjectManagement.Domain.Services;
 using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Data.Entity.Core.Metadata.Edm;
 using System.Linq;
 using System.Web;
 using System.Web.Http;
@@ -60,13 +62,41 @@ namespace ProjectManagement.Web.Controllers
         }
 
 
-        [Route("api/project/{id}")]
+        [Route("api/project/{id}/addStudent")]
         [HttpPost]
         [FilterConfig.ProfessorClaimsAuthorize]
         public IHttpActionResult addStudentToProject([FromBody] StudentProjectAssociationDTO studentProjectAssociation, int id)
         {
-            ProjectDTO result = this._projectService.AddStudentToProject(studentProjectAssociation, id);
-            return Ok(result);
+            Project project = this._projectService.AddStudentToProject(studentProjectAssociation, id);
+
+            var studentsAssociation = project.StudentProjectAssociations.Select(sta => new
+            {
+                sta.Id,
+                sta.Level,
+                sta.AddedAt,
+                Student = new
+                {
+                    sta.Student.Id,
+                    sta.Student.UserName,
+                    sta.Student.Email,
+                    sta.Student.Institution
+                }
+            }).ToList();
+
+            return Ok(new {
+                project.Id,
+                project.Name,
+                project.Description,
+                Coordinator = new
+                    {
+                        project.Coordinator.Id,
+                        project.Coordinator.UserName,
+                        project.Coordinator.Email,
+                        project.Coordinator.Degree,
+                        project.Coordinator.Field
+                    },  
+                StudentsAssociations = studentsAssociation
+            });
         }
 
         [Route("api/project/{id}")]
