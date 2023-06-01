@@ -15,28 +15,24 @@ namespace ProjectManagement.Entities.Models
         public int Id { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
-        public DateTime CreatedAt { get; set; } 
-        public virtual Professor Coordinator { get; set; }
+        public DateTime CreatedAt { get; set; }
+
+
+        [ForeignKey("Professor")]
+        public int CoordinatorId { get; set; }
+        public Professor Coordinator { get; set; }
         public virtual ICollection<StudentProjectAssociation> StudentProjectAssociations { get; set; }
 
-        public Project(int id, string name, string description)
-        {
-            Id = id;
-            Name = name;
-            Description = description;
-            CreatedAt = DateTime.Now;
-            Coordinator = null;
-        }
 
         public Project(string name, string description, Professor coordinator)
         {
             Name = name;
             Description = description;
             CreatedAt = DateTime.Now;
+            CoordinatorId = coordinator.Id;
             Coordinator = coordinator;
         }
 
-        public Project() { }
     }
     
 }

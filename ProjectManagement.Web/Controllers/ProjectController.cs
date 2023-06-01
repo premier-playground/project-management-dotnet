@@ -72,5 +72,14 @@ namespace ProjectManagement.Web.Controllers
 
             return Ok(result);
         }
+
+        [Route("project/{id}")]
+        [HttpGet]
+        public IHttpActionResult GetProject(int id)
+        {
+            Project result = this._projectService.GetProjectById(id);
+
+            return Ok(result);
+        }
     }
 }

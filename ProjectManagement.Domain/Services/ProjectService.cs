@@ -38,6 +38,10 @@ namespace ProjectManagement.Domain.Services
             return newProject;
         }
 
+        public Project GetProjectById(int id)
+        {       
+            return this._projectRepository.GetProjectById(id);
+        }
         public IEnumerable<Project> GetAllProjects()
         {
             return this._projectRepository.GetAllProjects();

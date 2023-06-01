@@ -53,7 +53,14 @@ namespace ProjectManagement.Repositories.Repositories
 
         public Project GetProjectById(int id)
         {
-            throw new NotImplementedException();
+            Project project;
+
+            using (var localDbContext = new LocalDBContext())
+            {
+                project = localDbContext.Projects.FirstOrDefault(p => p.Id == id);
+            }
+
+            return project;
         }
 
         private bool _disposed = false;
