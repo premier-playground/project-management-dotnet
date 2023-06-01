@@ -43,8 +43,6 @@ namespace ProjectManagement.Domain.Services
         }
 
 
-        
-
         public Professor CreateProfessor(ProfessorDTO professorDTO)
         {
             Professor professor = new Professor(professorDTO.Name, professorDTO.Email,
@@ -61,9 +59,11 @@ namespace ProjectManagement.Domain.Services
             return setRoleSuccessed ? professor : null;
         }
 
+
         private ApplicationUserManager GetApplicationUserManager()
         {
             ApplicationUserStore store = new ApplicationUserStore(new LocalDBContext());
+
             return new ApplicationUserManager(store);
         }
 
