@@ -19,6 +19,13 @@ namespace ProjectManagement.Web.Controllers
             this._userService = new UserService(new LocalDBContext());
         }
 
+        [HttpGet]
+        public IHttpActionResult GetProfessors()
+        {
+            var professors = _userService.GetProfessors();
+            return Ok(professors);
+        }
+
         [HttpPost]
         [AllowAnonymous]
         public IHttpActionResult CreateProfessor(ProfessorDTO professorDto)
