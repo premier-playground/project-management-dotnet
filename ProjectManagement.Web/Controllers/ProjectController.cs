@@ -60,7 +60,7 @@ namespace ProjectManagement.Web.Controllers
         }
 
 
-        [Route("project/{id}")]
+        [Route("api/project/{id}")]
         [HttpPost]
         [FilterConfig.ProfessorClaimsAuthorize]
         public IHttpActionResult addStudentToProject([FromBody] StudentProjectAssociationDTO studentProjectAssociation, int id)
@@ -69,7 +69,7 @@ namespace ProjectManagement.Web.Controllers
             return Ok(result);
         }
 
-        [Route("project/{id}")]
+        [Route("api/project/{id}")]
         [HttpPatch]
         public IHttpActionResult UpdateProject(ProjectDTO projectDTO, int id)
         {

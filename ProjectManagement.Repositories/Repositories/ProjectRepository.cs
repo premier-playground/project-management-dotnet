@@ -44,8 +44,11 @@ namespace ProjectManagement.Repositories.Repositories
                 var retrievedProject = context.Projects.FirstOrDefault(p => p.Id == projectId);
                 retrievedProject.Name = project.Name;
                 retrievedProject.Description = project.Description;
-                retrievedProject.Coordinator = project.Coordinator;
+
+                Professor coordinator = context.Professors.FirstOrDefault(p => p.Id == project.Coordinator.Id);
+                retrievedProject.Coordinator = coordinator;
                 context.SaveChanges();
+                newProject = retrievedProject;
             }
             return newProject;
         }

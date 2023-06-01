@@ -58,7 +58,8 @@ namespace ProjectManagement.Domain.Services
 
         public Project UpdateProject(ProjectDTO projectDto, int projectId)
         {
-            Project project = new Project();
+            Professor coordinator = _userRepository.GetProfessorById(projectDto.CoordinatorId);
+            Project project = new Project(projectDto.Name, projectDto.Description, coordinator);
             project = _projectRepository.UpdateProject(project, projectId);
             return project;
         }
