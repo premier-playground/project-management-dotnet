@@ -105,6 +105,7 @@ namespace ProjectManagement.Repositories.Repositories
                     .Include(p => p.StudentProjectAssociations)
                     .Include(p => p.StudentProjectAssociations.Select(spa => spa.Student))
                     .FirstOrDefault(p => p.Id == retrievedProject.Id);
+
                 context.SaveChanges();
             }
 

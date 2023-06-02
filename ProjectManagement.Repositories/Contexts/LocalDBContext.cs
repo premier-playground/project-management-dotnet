@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Data.Entity;
+using System.Linq;
 using System.Runtime.Remoting.Contexts;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
@@ -19,8 +20,18 @@ namespace ProjectManagement.Repositories.Contexts
             Database.SetInitializer<LocalDBContext>(new ProjectManagementInitializer());
             var roleStore = new RoleStore<IdentityRole>(this);
             var roleManager = new RoleManager<IdentityRole>(roleStore);
-            roleManager.Create(new IdentityRole("PROFESSOR"));
-            roleManager.Create(new IdentityRole("STUDENT"));
+            var professorRole = roleStore.Roles.FirstOrDefault(r => r.Name == "PROFESSOR");
+            var studentRole = roleStore.Roles.FirstOrDefault(r => r.Name == "STUDENT"); ;
+            if (professorRole == null)
+            {
+                roleManager.Create(new IdentityRole("PROFESSOR"));
+            }
+
+            if (studentRole == null)
+            {
+                roleManager.Create(new IdentityRole("STUDENT"));
+            }
+            
             this.Configuration.LazyLoadingEnabled = true;
         }
 
@@ -30,6 +41,10 @@ namespace ProjectManagement.Repositories.Contexts
             modelBuilder.Entity<User>()
                 .Map<Student>(m => m.Requires("Type").HasValue("Student"))
                 .Map<Professor>(m => m.Requires("Type").HasValue("Professor"));
+
+            modelBuilder.Entity<StudentProjectAssociation>()
+                .HasIndex(spa => new { spa.StudentId, spa.ProjectId })
+                .IsUnique(true);
         }
 
 

@@ -5,10 +5,10 @@ using System.Collections.Generic;
 using System.Data.Entity.Core.Metadata.Edm;
 using System.Linq;
 using System.Web;
-using System.Web.Http;
 using ProjectManagement.Repositories.Contexts;
 using ProjectManagement.Domain.DTO;
 using ProjectManagement.Entities.Models;
+using System.Web.Http;
 
 namespace ProjectManagement.Web.Controllers
 {
@@ -68,36 +68,43 @@ namespace ProjectManagement.Web.Controllers
         [FilterConfig.ProjectAuthorize]
         public IHttpActionResult AddStudentToProject([FromBody] StudentProjectAssociationDTO studentProjectAssociation, int id)
         {
-            Project project = this._projectService.AddStudentToProject(studentProjectAssociation, id);
-
-            var studentsAssociation = project.StudentProjectAssociations.Select(sta => new
+            try
             {
-                sta.Id,
-                sta.Level,
-                sta.AddedAt,
-                Student = new
+                Project project = this._projectService.AddStudentToProject(studentProjectAssociation, id);
+                var studentsAssociation = project.StudentProjectAssociations.Select(sta => new
                 {
-                    sta.Student.Id,
-                    sta.Student.UserName,
-                    sta.Student.Email,
-                    sta.Student.Institution
-                }
-            }).ToList();
+                    sta.Id,
+                    sta.Level,
+                    sta.AddedAt,
+                    Student = new
+                    {
+                        sta.Student.Id,
+                        sta.Student.UserName,
+                        sta.Student.Email,
+                        sta.Student.Institution
+                    }
+                }).ToList();
 
-            return Ok(new {
-                project.Id,
-                project.Name,
-                project.Description,
-                Coordinator = new
+                return Ok(new
+                {
+                    project.Id,
+                    project.Name,
+                    project.Description,
+                    Coordinator = new
                     {
                         project.Coordinator.Id,
                         project.Coordinator.UserName,
                         project.Coordinator.Email,
                         project.Coordinator.Degree,
                         project.Coordinator.Field
-                    },  
-                StudentsAssociations = studentsAssociation
-            });
+                    },
+                    StudentsAssociations = studentsAssociation
+                });
+            }
+            catch
+            {
+                return BadRequest("Can't add this student to this project");
+            }
         }
 
         [Route("api/project/{id}/removeStudent")]
@@ -106,37 +113,45 @@ namespace ProjectManagement.Web.Controllers
         [FilterConfig.ProjectAuthorize]
         public IHttpActionResult RemoveStudentToProject([FromBody] StudentProjectAssociationDTO studentProjectAssociation, int id)
         {
-            Project project = this._projectService.RemoveStudentFromProject(studentProjectAssociation.StudentId, id);
-
-            var studentsAssociation = project.StudentProjectAssociations.Select(sta => new
+            try
             {
-                sta.Id,
-                sta.Level,
-                sta.AddedAt,
-                Student = new
-                {
-                    sta.Student.Id,
-                    sta.Student.UserName,
-                    sta.Student.Email,
-                    sta.Student.Institution
-                }
-            }).ToList();
+                Project project = this._projectService.RemoveStudentFromProject(studentProjectAssociation.StudentId, id);
 
-            return Ok(new
-            {
-                project.Id,
-                project.Name,
-                project.Description,
-                Coordinator = new
+                var studentsAssociation = project.StudentProjectAssociations.Select(sta => new
                 {
-                    project.Coordinator.Id,
-                    project.Coordinator.UserName,
-                    project.Coordinator.Email,
-                    project.Coordinator.Degree,
-                    project.Coordinator.Field
-                },
-                StudentsAssociations = studentsAssociation
-            });
+                    sta.Id,
+                    sta.Level,
+                    sta.AddedAt,
+                    Student = new
+                    {
+                        sta.Student.Id,
+                        sta.Student.UserName,
+                        sta.Student.Email,
+                        sta.Student.Institution
+                    }
+                }).ToList();
+
+                return Ok(new
+                {
+                    project.Id,
+                    project.Name,
+                    project.Description,
+                    Coordinator = new
+                    {
+                        project.Coordinator.Id,
+                        project.Coordinator.UserName,
+                        project.Coordinator.Email,
+                        project.Coordinator.Degree,
+                        project.Coordinator.Field
+                    },
+                    StudentsAssociations = studentsAssociation
+                });
+            }
+            catch
+            {
+                return BadRequest("Can't remove this student to this project");
+            }
+
         }
 
 

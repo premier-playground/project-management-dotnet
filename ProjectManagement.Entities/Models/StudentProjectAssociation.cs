@@ -14,7 +14,9 @@ namespace ProjectManagement.Entities.Models
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
-        //public virtual Project Project { get; set; }
+        public int ProjectId { get; set; }
+        public virtual Project Project { get; set; }
+        public string StudentId { get; set; }
         public virtual Student Student { get; set; }
         public Level Level { get; set; }
         public DateTime AddedAt { get; set; }
