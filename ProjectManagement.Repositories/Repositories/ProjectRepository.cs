@@ -61,7 +61,13 @@ namespace ProjectManagement.Repositories.Repositories
 
         public IEnumerable<Project> GetAllProjects()
         {
-            throw new NotImplementedException();
+            List<Project> projects = new List<Project>();
+            using (var localDbContext = new LocalDBContext())
+            {
+                //TODO aqui o project é buscado mas o coordinador ID nao vem
+                projects = localDbContext.Projects.ToList();
+            }
+            return projects;
         }
 
         public Project GetProjectById(int id)

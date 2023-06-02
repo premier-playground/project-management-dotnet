@@ -67,5 +67,22 @@ namespace ProjectManagement.Domain.Services
             project = _projectRepository.UpdateProject(project, projectId);
             return project;
         }
+
+        public List<ProjectGetDTO> GetProjects()
+        {
+            var projects = _projectRepository.GetAllProjects();
+            List<ProjectGetDTO> result = new List<ProjectGetDTO>();
+            foreach ( var p in projects )
+            {
+                result.Add(new ProjectGetDTO(p.Id, p.Name, p.Description, p.Coordinator.Id));
+            }
+            return result;
+        }
+
+        public ProjectGetDTO GetProjectById(int id)
+        {
+            Project p = _projectRepository.GetProjectById(id);
+            return new ProjectGetDTO(p.Id, p.Name, p.Description, p.Coordinator.Id);
+        }
     }
 }

@@ -15,6 +15,8 @@ namespace ProjectManagement.Repositories.Repositories
         IEnumerable<Student> GetAllStudents();
         Student GetStudentById(string id);
 
+        Student GetStudentByName(string name);
+
         Professor InsertProfessor(Professor professor);
         void UpdateProfessor(Professor professor);
         void DeleteProfessor(Professor professor);

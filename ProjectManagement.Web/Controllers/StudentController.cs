@@ -39,5 +39,47 @@ namespace ProjectManagement.Web.Controllers
 
             return httpActionResult;
         }
+
+        [HttpGet]
+        [AllowAnonymous]
+        public IHttpActionResult GetStudents()
+        {
+            var students = _userService.GetStudents();
+            return Ok(students);
+        }
+
+        [HttpPut]
+        public IHttpActionResult UpdateStudent(StudentDTO studentDto)
+        {
+            IHttpActionResult httpActionResult;
+            try
+            {
+                _userService.UpdateStudent(studentDto);
+                httpActionResult = Ok(studentDto);
+            }
+            catch (Exception e)
+            {
+                httpActionResult = BadRequest();
+            }
+
+            return httpActionResult;
+        }
+
+        [HttpDelete]
+        public IHttpActionResult DeleteStudent(string id)
+        {
+            IHttpActionResult httpActionResult;
+            try
+            {
+                _userService.DeleteStudent(id);
+                httpActionResult = Ok();
+            }
+            catch (Exception e)
+            {
+                httpActionResult = BadRequest();
+            }
+
+            return httpActionResult;
+        }
     }
 }

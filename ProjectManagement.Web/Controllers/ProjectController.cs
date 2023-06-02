@@ -22,7 +22,7 @@ namespace ProjectManagement.Web.Controllers
         }
 
         [HttpPost]
-        [FilterConfig.ProfessorClaimsAuthorize]
+        //[FilterConfig.ProfessorClaimsAuthorize]
         public IHttpActionResult CreateProject(ProjectDTO projectDTO)
         {
             IHttpActionResult httpActionResult;
@@ -64,7 +64,7 @@ namespace ProjectManagement.Web.Controllers
 
         [Route("api/project/{id}/addStudent")]
         [HttpPost]
-        [FilterConfig.ProfessorClaimsAuthorize]
+        //[FilterConfig.ProfessorClaimsAuthorize]
         public IHttpActionResult addStudentToProject([FromBody] StudentProjectAssociationDTO studentProjectAssociation, int id)
         {
             Project project = this._projectService.AddStudentToProject(studentProjectAssociation, id);
@@ -118,6 +118,23 @@ namespace ProjectManagement.Web.Controllers
                     project.Coordinator.Field
                 }
             });
+        }
+
+        [HttpGet]
+        [AllowAnonymous]
+        public IHttpActionResult GetProjects()
+        {
+            var projects = _projectService.GetProjects();
+            return Ok(projects);
+        }
+
+        [Route("api/project/{id}")]
+        [HttpGet]
+        [AllowAnonymous]
+        public IHttpActionResult GetProjectById(int id)
+        {
+            var project = _projectService.GetProjectById(id);
+            return Ok(project);
         }
     }
 }

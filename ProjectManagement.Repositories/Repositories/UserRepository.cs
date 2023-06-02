@@ -8,6 +8,7 @@ using System.Runtime.Remoting.Contexts;
 using System.Text;
 using System.Threading.Tasks;
 using ProjectManagement.Repositories.Contexts;
+using System.Data.Entity.Migrations;
 
 namespace ProjectManagement.Repositories.Repositories
 {
@@ -23,12 +24,22 @@ namespace ProjectManagement.Repositories.Repositories
 
         public void DeleteStudent(Student student)
         {
-            throw new NotImplementedException();
+            using (var localDbContext = new LocalDBContext())
+            {
+                localDbContext.Students.Remove(student);
+                localDbContext.SaveChanges();
+
+            }
         }
 
         public IEnumerable<Student> GetAllStudents()
         {
-            throw new NotImplementedException();
+            List<Student> students = null;
+            using (var localDbContext = new LocalDBContext())
+            {
+                students = localDbContext.Students.ToList();
+            }
+            return students;
         }
 
         public Student GetStudentById(string id)
@@ -38,6 +49,18 @@ namespace ProjectManagement.Repositories.Repositories
             using (var localDbContext = new LocalDBContext())
             {
                 student = localDbContext.Students.FirstOrDefault(p => p.Id == id);
+            }
+
+            return student;
+        }
+
+        public Student GetStudentByName(string name)
+        {
+            Student student;
+
+            using (var localDbContext = new LocalDBContext())
+            {
+                student = localDbContext.Students.FirstOrDefault(p => p.UserName == name);
             }
 
             return student;
@@ -58,7 +81,12 @@ namespace ProjectManagement.Repositories.Repositories
 
         public void UpdateStudent(Student student)
         {
-            throw new NotImplementedException();
+            
+            using (var localDbContext = new LocalDBContext())
+            {
+                localDbContext.Students.AddOrUpdate(student);
+                localDbContext.SaveChanges();
+            }
         }
 
         private bool _disposed = false;
