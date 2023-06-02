@@ -48,6 +48,15 @@ namespace ProjectManagement.Web.Controllers
             return Ok(students);
         }
 
+        [Route("api/student/{id}")]
+        [HttpGet]
+        [AllowAnonymous]
+        public IHttpActionResult GetStudentById(string id)
+        {
+            var student = _userService.GetStudentById(id); 
+            return Ok(student);
+        }
+
         [HttpPut]
         public IHttpActionResult UpdateStudent(StudentDTO studentDto)
         {

@@ -64,8 +64,7 @@ namespace ProjectManagement.Repositories.Repositories
             List<Project> projects = new List<Project>();
             using (var localDbContext = new LocalDBContext())
             {
-                //TODO aqui o project é buscado mas o coordinador ID nao vem
-                projects = localDbContext.Projects.ToList();
+                projects = localDbContext.Projects.Include(p => p.Coordinator).ToList();
             }
             return projects;
         }
@@ -75,7 +74,7 @@ namespace ProjectManagement.Repositories.Repositories
             Project project = null;
             using (var context = new LocalDBContext())
             {
-                project = context.Projects.FirstOrDefault(p => p.Id == id);
+                project = context.Projects.Include(p => p.Coordinator).FirstOrDefault(p => p.Id == id);
             }
             return project;
         }

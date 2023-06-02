@@ -44,6 +44,12 @@ namespace ProjectManagement.Domain.Services
             return identityResult.Succeeded ? student : null;
         }
 
+        public StudentGetDTO GetStudentById(string id)
+        {
+            var p = _userRepository.GetStudentById(id);
+            return new StudentGetDTO(p.Id, p.UserName, p.Email, p.Role, p.Institution);
+        }
+
         public List<StudentGetDTO> GetStudents()
         {
             return _userRepository.GetAllStudents()
@@ -51,7 +57,6 @@ namespace ProjectManagement.Domain.Services
                         .ToList();
         }
 
-       
         public void UpdateStudent(StudentDTO studentDTO)
         {
             Student student = this._userRepository.GetStudentByName(studentDTO.Name);

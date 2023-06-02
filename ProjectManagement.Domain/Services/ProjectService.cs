@@ -70,13 +70,10 @@ namespace ProjectManagement.Domain.Services
 
         public List<ProjectGetDTO> GetProjects()
         {
-            var projects = _projectRepository.GetAllProjects();
-            List<ProjectGetDTO> result = new List<ProjectGetDTO>();
-            foreach ( var p in projects )
-            {
-                result.Add(new ProjectGetDTO(p.Id, p.Name, p.Description, p.Coordinator.Id));
-            }
-            return result;
+
+            return _projectRepository.GetAllProjects()
+                        .Select(p => new ProjectGetDTO(p.Id, p.Name, p.Description, p.Coordinator.Id))
+                        .ToList();
         }
 
         public ProjectGetDTO GetProjectById(int id)
