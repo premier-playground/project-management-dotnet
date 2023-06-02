@@ -41,22 +41,18 @@ namespace ProjectManagement.Domain.Services
 
         public Project AddStudentToProject(StudentProjectAssociationDTO studentProjectAssociationDTO, int projectId)
         {
-            Student student = this._userRepository.GetStudentById(studentProjectAssociationDTO.StudentId);
+            Project project = _projectRepository.GetProjectById(projectId);
 
-            StudentProjectAssociation studentProjectAssociation = new StudentProjectAssociation(
-                studentProjectAssociationDTO.Level
-            );
-
-            Project project = this._projectRepository.GetProjectById(projectId);
-
-            project = this._projectRepository.AddStudent(project.Id, studentProjectAssociationDTO.StudentId,
+            project = _projectRepository.AddStudent(project.Id, studentProjectAssociationDTO.StudentId,
                 studentProjectAssociationDTO.Level);
-            //project.StudentProjectAssociations.Add(studentProjectAssociation);
 
-            //this._projectRepository.UpdateProject(project, projectId);
+            return project;
+        }
 
+        public Project RemoveStudentFromProject(string studentId, int projectId)
+        {
+            var project = _projectRepository.RemoveStudent(projectId, studentId);
 
-            //return this._mapper.MapToProjectDTO(project);
             return project;
         }
 

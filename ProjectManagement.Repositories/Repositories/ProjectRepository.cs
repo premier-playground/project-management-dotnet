@@ -107,7 +107,30 @@ namespace ProjectManagement.Repositories.Repositories
 
         public Project RemoveStudent(int projectId, string studentId)
         {
-            throw new NotImplementedException();
+            Project project = null;
+            using (var context = new LocalDBContext())
+            {
+                var retrievedProject = context.Projects.FirstOrDefault(p => p.Id == projectId);
+                if (retrievedProject == null) return null;
+
+                var retrievedStudent = context.Students.FirstOrDefault(s => s.Id == studentId);
+                if (retrievedStudent == null) return null;
+
+                var studentProjectAssociation =
+                    context.StudentProjectAssociations.FirstOrDefault(spa => 
+                        spa.Student.Id == retrievedStudent.Id);
+                if (studentProjectAssociation == null) return null;
+
+                retrievedProject.StudentProjectAssociations.Remove(studentProjectAssociation);
+                project = context.Projects
+                    .Include(p => p.Coordinator)
+                    .Include(p => p.StudentProjectAssociations)
+                    .Include(p => p.StudentProjectAssociations.Select(spa => spa.Student))
+                    .FirstOrDefault(p => p.Id == retrievedProject.Id);
+                context.SaveChanges();
+            }
+
+            return project;
         }
 
         private bool _disposed = false;

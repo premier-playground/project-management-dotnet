@@ -65,7 +65,7 @@ namespace ProjectManagement.Web.Controllers
         [Route("api/project/{id}/addStudent")]
         [HttpPost]
         [FilterConfig.ProfessorClaimsAuthorize]
-        public IHttpActionResult addStudentToProject([FromBody] StudentProjectAssociationDTO studentProjectAssociation, int id)
+        public IHttpActionResult AddStudentToProject([FromBody] StudentProjectAssociationDTO studentProjectAssociation, int id)
         {
             Project project = this._projectService.AddStudentToProject(studentProjectAssociation, id);
 
@@ -95,6 +95,44 @@ namespace ProjectManagement.Web.Controllers
                         project.Coordinator.Degree,
                         project.Coordinator.Field
                     },  
+                StudentsAssociations = studentsAssociation
+            });
+        }
+
+        [Route("api/project/{id}/removeStudent")]
+        [HttpPost]
+        [FilterConfig.ProfessorClaimsAuthorize]
+        public IHttpActionResult RemoveStudentToProject([FromBody] StudentProjectAssociationDTO studentProjectAssociation, int id)
+        {
+            Project project = this._projectService.RemoveStudentFromProject(studentProjectAssociation.StudentId, id);
+
+            var studentsAssociation = project.StudentProjectAssociations.Select(sta => new
+            {
+                sta.Id,
+                sta.Level,
+                sta.AddedAt,
+                Student = new
+                {
+                    sta.Student.Id,
+                    sta.Student.UserName,
+                    sta.Student.Email,
+                    sta.Student.Institution
+                }
+            }).ToList();
+
+            return Ok(new
+            {
+                project.Id,
+                project.Name,
+                project.Description,
+                Coordinator = new
+                {
+                    project.Coordinator.Id,
+                    project.Coordinator.UserName,
+                    project.Coordinator.Email,
+                    project.Coordinator.Degree,
+                    project.Coordinator.Field
+                },
                 StudentsAssociations = studentsAssociation
             });
         }
