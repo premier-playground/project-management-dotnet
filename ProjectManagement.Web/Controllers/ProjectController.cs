@@ -65,6 +65,7 @@ namespace ProjectManagement.Web.Controllers
         [Route("api/project/{id}/addStudent")]
         [HttpPost]
         [FilterConfig.ProfessorClaimsAuthorize]
+        [FilterConfig.ProjectAuthorize]
         public IHttpActionResult AddStudentToProject([FromBody] StudentProjectAssociationDTO studentProjectAssociation, int id)
         {
             Project project = this._projectService.AddStudentToProject(studentProjectAssociation, id);
@@ -102,6 +103,7 @@ namespace ProjectManagement.Web.Controllers
         [Route("api/project/{id}/removeStudent")]
         [HttpPost]
         [FilterConfig.ProfessorClaimsAuthorize]
+        [FilterConfig.ProjectAuthorize]
         public IHttpActionResult RemoveStudentToProject([FromBody] StudentProjectAssociationDTO studentProjectAssociation, int id)
         {
             Project project = this._projectService.RemoveStudentFromProject(studentProjectAssociation.StudentId, id);
