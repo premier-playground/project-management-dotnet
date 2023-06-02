@@ -54,9 +54,15 @@ namespace ProjectManagement.Repositories.Repositories
             return newProject;
         }
 
-        public void DeleteProject(Project project)
+        public void DeleteProject(int projectId)
         {
-            throw new NotImplementedException();
+            using (var context = new LocalDBContext())
+            {
+                var retrievedProject = context.Projects.FirstOrDefault(p => p.Id == projectId);
+                if (retrievedProject == null) return;
+                context.Projects.Remove(retrievedProject);
+                context.SaveChanges();
+            }
         }
 
         public IEnumerable<Project> GetAllProjects()

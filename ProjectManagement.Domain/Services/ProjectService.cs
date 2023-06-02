@@ -63,5 +63,10 @@ namespace ProjectManagement.Domain.Services
             project = _projectRepository.UpdateProject(project, projectId);
             return project;
         }
+
+        public void DeleteProject(int projectId)
+        {
+            _projectRepository.DeleteProject(projectId);
+        }
     }
 }

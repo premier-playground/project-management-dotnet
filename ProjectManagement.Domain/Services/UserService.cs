@@ -65,5 +65,12 @@ namespace ProjectManagement.Domain.Services
             return identityResult.Succeeded ? professor : null;
         }
 
+        public List<ProfessorGetDTO> GetProfessors()
+        {
+            return _userRepository.GetAllProfessors()
+                        .Select(p => new ProfessorGetDTO(p.Id, p.UserName, p.Email, p.Role, p.Field, p.Degree))
+                        .ToList();
+        }
+
     }
 }

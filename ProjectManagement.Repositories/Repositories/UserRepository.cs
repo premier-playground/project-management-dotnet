@@ -106,7 +106,12 @@ namespace ProjectManagement.Repositories.Repositories
 
         public IEnumerable<Professor> GetAllProfessors()
         {
-            throw new NotImplementedException();
+            List<Professor> professors = null;
+            using (var localDbContext = new LocalDBContext())
+            {
+                professors = localDbContext.Professors.ToList();
+            }
+            return professors;
         }
 
         public Professor GetProfessorById(string id)

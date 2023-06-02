@@ -158,5 +158,20 @@ namespace ProjectManagement.Web.Controllers
                 }
             });
         }
+
+        [Route("api/project/{id}")]
+        [HttpDelete]
+        public IHttpActionResult DeleteProject(int id)
+        {
+            try
+            {
+                _projectService.DeleteProject(id);
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest();
+            }
+        }
     }
 }

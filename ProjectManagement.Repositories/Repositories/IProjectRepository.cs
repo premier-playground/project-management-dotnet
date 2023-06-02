@@ -14,7 +14,7 @@ namespace ProjectManagement.Repositories.Repositories
         Project UpdateProject(Project project, int projectId);
         Project AddStudent(int projectId, string studentId, Level level);
         Project RemoveStudent(int projectId, string studentId);
-        void DeleteProject(Project project);
+        void DeleteProject(int projectId);
         IEnumerable<Project> GetAllProjects();
         Project GetProjectById(int id);
     }
