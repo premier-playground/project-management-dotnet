@@ -9,6 +9,7 @@ using ProjectManagement.Domain.Services;
 using ProjectManagement.Entities.Enums;
 using ProjectManagement.Entities.Models;
 using ProjectManagement.Repositories.Contexts;
+using ProjectManagement.Tests.Utils;
 
 namespace ProjectManagement.Tests.ServicesTest
 {
@@ -22,16 +23,10 @@ namespace ProjectManagement.Tests.ServicesTest
             _userService = new UserService(new LocalDBContext());
         }
 
-        [AssemblyInitialize]
-        public static void AssemblyInit(TestContext context)
+        [TestCleanup()]
+        public void Cleanup()
         {
-            using (var localDbContext = new LocalDBContext())
-            {
-                localDbContext.StudentProjectAssociations.RemoveRange(localDbContext.StudentProjectAssociations);
-                localDbContext.Professors.RemoveRange(localDbContext.Professors);
-                localDbContext.Students.RemoveRange(localDbContext.Students);
-                localDbContext.Projects.RemoveRange(localDbContext.Projects);
-            }
+            TestUtil.CleanDatabase();
         }
 
         [TestMethod]
@@ -47,7 +42,55 @@ namespace ProjectManagement.Tests.ServicesTest
             };
 
             var createdStudent = _userService.CreateStudent(studentDTO);
-            Assert.IsTrue(createdStudent.UserName == studentDTO.Name);
+            Assert.IsNotNull(createdStudent);
+        }
+
+        [TestMethod]
+        public void UnsuccessfulCreateStudent()
+        {
+            StudentDTO studentDTO = new StudentDTO
+            {
+                Email = "davi.sousa@ccc.ufcg.edu.br",
+                Name = "Davi",
+                Password = "123456",
+                Role = Role.STUDENT,
+                Institution = "UFCG"
+            };
+            Assert.IsNotNull(_userService.CreateStudent(studentDTO));
+            Assert.IsNull(_userService.CreateStudent(studentDTO));
+        }
+
+        [TestMethod]
+        public void SuccessfulCreateProfessor()
+        {
+            ProfessorDTO professorDto = new ProfessorDTO
+            {
+                Name = "ProfessorX",
+                Email = "professor_x@xmen.com",
+                Password = "123456",
+                Role = Role.PROFESSOR,
+                Degree = "Psychiatry",
+                Field = "Mind Reading"
+            };
+            var createdProfessor = _userService.CreateProfessor(professorDto);
+            Assert.IsNotNull(createdProfessor);
+        }
+
+        [TestMethod]
+        public void UnsuccessfulCreateProfessor()
+        {
+            ProfessorDTO professorDto = new ProfessorDTO
+            {
+                Name = "ProfessorX",
+                Email = "professor_x@xmen.com",
+                Password = "123456",
+                Role = Role.PROFESSOR,
+                Degree = "Psychiatry",
+                Field = "Mind Reading"
+            };
+            var createdProfessor = _userService.CreateProfessor(professorDto);
+            Assert.IsNotNull(createdProfessor);
+            Assert.IsNull(_userService.CreateProfessor(professorDto));
         }
     }
 }

@@ -99,6 +99,7 @@ namespace ProjectManagement.Web.Controllers
             });
         }
 
+
         [Route("api/project/{id}")]
         [HttpPatch]
         public IHttpActionResult UpdateProject(ProjectDTO projectDTO, int id)
