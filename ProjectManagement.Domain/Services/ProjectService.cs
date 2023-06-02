@@ -15,57 +15,54 @@ namespace ProjectManagement.Domain.Services
     {
         private IProjectRepository _projectRepository;
         private IUserRepository _userRepository;
-        private ProjectMapper _mapper;
+        private CustomMapper _mapper;
 
         public ProjectService(DbContext locaDbContext)
         {
             _projectRepository = new ProjectRepository(locaDbContext);
             _userRepository = new UserRepository(locaDbContext);
-            _mapper = new ProjectMapper();
+            _mapper = new CustomMapper();
         }
 
-        public Project CreateProject(ProjectDTO projectDto)
+        public ReturnProjectDTO CreateProject(ProjectDTO projectDto)
         {
             Project newProject = null;
 
             Professor professor = _userRepository.GetProfessorById(projectDto.CoordinatorId);
+
             if (professor != null)
             {
                 Project project = new Project(projectDto.Name, projectDto.Description, professor);
                 newProject = _projectRepository.InsertProject(project);
             }
 
-            return newProject;
+            ReturnProjectDTO returnProject = this._mapper.Map<Project, ReturnProjectDTO>(newProject);
+
+            return returnProject;
         }
 
 
-        public Project AddStudentToProject(StudentProjectAssociationDTO studentProjectAssociationDTO, int projectId)
+        public ReturnProjectDTO AddStudentToProject(StudentProjectAssociationDTO studentProjectAssociationDTO, int projectId)
         {
-            Student student = this._userRepository.GetStudentById(studentProjectAssociationDTO.StudentId);
-
-            StudentProjectAssociation studentProjectAssociation = new StudentProjectAssociation(
+            var project = this._projectRepository.AddStudent(
+                projectId, 
+                studentProjectAssociationDTO.StudentId,
                 studentProjectAssociationDTO.Level
             );
 
-            Project project = this._projectRepository.GetProjectById(projectId);
-
-            project = this._projectRepository.AddStudent(project.Id, studentProjectAssociationDTO.StudentId,
-                studentProjectAssociationDTO.Level);
-            //project.StudentProjectAssociations.Add(studentProjectAssociation);
-
-            //this._projectRepository.UpdateProject(project, projectId);
-
-
-            //return this._mapper.MapToProjectDTO(project);
-            return project;
+            return this._mapper.Map<Project, ReturnProjectDTO>(project);
         }
 
-        public Project UpdateProject(ProjectDTO projectDto, int projectId)
+
+        public ReturnProjectDTO UpdateProject(ProjectDTO projectDto, int projectId)
         {
             Professor coordinator = _userRepository.GetProfessorById(projectDto.CoordinatorId);
+
             Project project = new Project(projectDto.Name, projectDto.Description, coordinator);
+
             project = _projectRepository.UpdateProject(project, projectId);
-            return project;
+
+            return this._mapper.Map<Project, ReturnProjectDTO>(project);
         }
     }
 }

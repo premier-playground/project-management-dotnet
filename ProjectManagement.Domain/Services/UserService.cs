@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using ProjectManagement.Domain.DTO;
+using ProjectManagement.Domain.Mappers;
 using ProjectManagement.Entities.Models;
 using ProjectManagement.Repositories;
 using ProjectManagement.Repositories.Contexts;
@@ -19,17 +20,19 @@ namespace ProjectManagement.Domain.Services
     public class UserService
     {
         private IUserRepository _userRepository;
+        private CustomMapper _mapper;
 
 
         public UserService(DbContext localDbContext)
         {
             _userRepository = new UserRepository(localDbContext);
+            this._mapper = new CustomMapper();
         }
 
 
-        public Student CreateStudent(StudentDTO studentDTO)
+        public ReturnStudentDTO CreateStudent(StudentDTO studentDTO)
         {
-            Student student = new Student(studentDTO.Name, studentDTO.Email, studentDTO.Role, studentDTO.Institution);
+            Student student = new Student(studentDTO.UserName, studentDTO.Email, studentDTO.Institution);
 
             var userManager = this.GetApplicationUserManager();
 
@@ -39,14 +42,13 @@ namespace ProjectManagement.Domain.Services
 
             bool setRoleSuccessed = this.SetUpUserRole(userManager, student, "STUDENT");
 
-            return setRoleSuccessed ? student : null;
+            return setRoleSuccessed ? this._mapper.Map<Student, ReturnStudentDTO>(student) : null;
         }
 
 
-        public Professor CreateProfessor(ProfessorDTO professorDTO)
+        public ReturnProfessorDTO CreateProfessor(ProfessorDTO professorDTO)
         {
-            Professor professor = new Professor(professorDTO.Name, professorDTO.Email,
-                professorDTO.Role, professorDTO.Field, professorDTO.Degree);
+            Professor professor = new Professor(professorDTO.UserName, professorDTO.Email, professorDTO.Field, professorDTO.Degree);
 
             var userManager = this.GetApplicationUserManager();
 
@@ -56,7 +58,7 @@ namespace ProjectManagement.Domain.Services
 
             bool setRoleSuccessed = this.SetUpUserRole(userManager, professor, "PROFESSOR");
 
-            return setRoleSuccessed ? professor : null;
+            return setRoleSuccessed ? this._mapper.Map<Professor, ReturnProfessorDTO>(professor) : null;
         }
 
 

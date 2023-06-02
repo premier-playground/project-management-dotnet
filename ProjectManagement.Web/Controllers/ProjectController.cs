@@ -21,6 +21,7 @@ namespace ProjectManagement.Web.Controllers
             _projectService = new ProjectService(new LocalDBContext());
         }
 
+
         [HttpPost]
         [FilterConfig.ProfessorClaimsAuthorize]
         public IHttpActionResult CreateProject(ProjectDTO projectDTO)
@@ -28,27 +29,14 @@ namespace ProjectManagement.Web.Controllers
             IHttpActionResult httpActionResult;
             try
             {
-                Project project = _projectService.CreateProject(projectDTO);
+                ReturnProjectDTO project = _projectService.CreateProject(projectDTO);
                 if (project == null)
                 {
                     httpActionResult = NotFound();
                 }
                 else
                 {
-                    httpActionResult = Ok(new
-                    {
-                        project.Id,
-                        project.Name,
-                        project.Description,
-                        Coordinator = new
-                        {
-                            project.Coordinator.Id,
-                            project.Coordinator.UserName,
-                            project.Coordinator.Email,
-                            project.Coordinator.Degree,
-                            project.Coordinator.Field
-                        }
-                    });
+                    httpActionResult = Ok(project);
                 }
                 
             }
@@ -67,57 +55,18 @@ namespace ProjectManagement.Web.Controllers
         [FilterConfig.ProfessorClaimsAuthorize]
         public IHttpActionResult addStudentToProject([FromBody] StudentProjectAssociationDTO studentProjectAssociation, int id)
         {
-            Project project = this._projectService.AddStudentToProject(studentProjectAssociation, id);
+            ReturnProjectDTO project = this._projectService.AddStudentToProject(studentProjectAssociation, id);
 
-            var studentsAssociation = project.StudentProjectAssociations.Select(sta => new
-            {
-                sta.Id,
-                sta.Level,
-                sta.AddedAt,
-                Student = new
-                {
-                    sta.Student.Id,
-                    sta.Student.UserName,
-                    sta.Student.Email,
-                    sta.Student.Institution
-                }
-            }).ToList();
-
-            return Ok(new {
-                project.Id,
-                project.Name,
-                project.Description,
-                Coordinator = new
-                    {
-                        project.Coordinator.Id,
-                        project.Coordinator.UserName,
-                        project.Coordinator.Email,
-                        project.Coordinator.Degree,
-                        project.Coordinator.Field
-                    },  
-                StudentsAssociations = studentsAssociation
-            });
+            return Ok(project);
         }
 
         [Route("api/project/{id}")]
         [HttpPatch]
         public IHttpActionResult UpdateProject(ProjectDTO projectDTO, int id)
         {
-            Project project = _projectService.UpdateProject(projectDTO, id);
-            return Ok(new
-            {
-                project.Id,
-                project.Name,
-                project.Description,
-                Coordinator = new
-                {
-                    project.Coordinator.Id,
-                    project.Coordinator.UserName,
-                    project.Coordinator.Email,
-                    project.Coordinator.Degree,
-                    project.Coordinator.Field
-                }
-            });
+            ReturnProjectDTO project = _projectService.UpdateProject(projectDTO, id);
+            
+            return Ok(project);
         }
     }
 }

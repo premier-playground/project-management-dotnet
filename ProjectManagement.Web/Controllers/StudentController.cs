@@ -30,10 +30,10 @@ namespace ProjectManagement.Web.Controllers
             IHttpActionResult httpActionResult;
             try
             {
-                Student student = _userService.CreateStudent(studentDto);
+                ReturnStudentDTO student = _userService.CreateStudent(studentDto);
                 httpActionResult = Ok(student);
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 httpActionResult = BadRequest();
             }
