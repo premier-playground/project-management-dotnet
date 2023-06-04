@@ -157,6 +157,7 @@ namespace ProjectManagement.Web.Controllers
 
         [Route("api/project/{id}")]
         [HttpPatch]
+        [FilterConfig.ProjectAuthorize]
         public IHttpActionResult UpdateProject(ProjectDTO projectDTO, int id)
         {
             Project project = _projectService.UpdateProject(projectDTO, id);
@@ -178,6 +179,7 @@ namespace ProjectManagement.Web.Controllers
 
         [Route("api/project/{id}")]
         [HttpDelete]
+        [FilterConfig.ProjectAuthorize]
         public IHttpActionResult DeleteProject(int id)
         {
             try
@@ -189,6 +191,23 @@ namespace ProjectManagement.Web.Controllers
             {
                 return BadRequest();
             }
+        }
+
+        [HttpGet]
+        [AllowAnonymous]
+        public IHttpActionResult GetProjects()
+        {
+            var projects = _projectService.GetProjects();
+            return Ok(projects);
+        }
+
+        [Route("api/project/{id}")]
+        [HttpGet]
+        [AllowAnonymous]
+        public IHttpActionResult GetProjectById(int id)
+        {
+            var project = _projectService.GetProjectById(id);
+            return Ok(project);
         }
     }
 }

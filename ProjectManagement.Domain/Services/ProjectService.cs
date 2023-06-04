@@ -68,5 +68,18 @@ namespace ProjectManagement.Domain.Services
         {
             _projectRepository.DeleteProject(projectId);
         }
+
+        public List<ProjectGetDTO> GetProjects()
+        {
+            return _projectRepository.GetAllProjects()
+                .Select(p => new ProjectGetDTO(p.Id, p.Name, p.Description, p.Coordinator.Id))
+                .ToList();
+        }
+
+        public ProjectGetDTO GetProjectById(int id)
+        {
+            Project p = _projectRepository.GetProjectById(id);
+            return new ProjectGetDTO(p.Id, p.Name, p.Description, p.Coordinator.Id);
+        }
     }
 }

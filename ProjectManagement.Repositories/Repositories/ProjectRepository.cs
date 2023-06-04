@@ -67,7 +67,12 @@ namespace ProjectManagement.Repositories.Repositories
 
         public IEnumerable<Project> GetAllProjects()
         {
-            throw new NotImplementedException();
+            List<Project> projects = new List<Project>();
+            using (var localDbContext = new LocalDBContext())
+            {
+                projects = localDbContext.Projects.Include(p => p.Coordinator).ToList();
+            }
+            return projects;
         }
 
         public Project GetProjectById(int id)
@@ -75,7 +80,7 @@ namespace ProjectManagement.Repositories.Repositories
             Project project = null;
             using (var context = new LocalDBContext())
             {
-                project = context.Projects.FirstOrDefault(p => p.Id == id);
+                project = context.Projects.Include(p => p.Coordinator).FirstOrDefault(p => p.Id == id);
             }
             return project;
         }

@@ -44,6 +44,36 @@ namespace ProjectManagement.Domain.Services
             return identityResult.Succeeded ? student : null;
         }
 
+        public StudentGetDTO GetStudentById(string id)
+        {
+            var p = _userRepository.GetStudentById(id);
+            return new StudentGetDTO(p.Id, p.UserName, p.Email, p.Role, p.Institution);
+        }
+
+        public List<StudentGetDTO> GetStudents()
+        {
+            return _userRepository.GetAllStudents()
+                        .Select(p => new StudentGetDTO(p.Id, p.UserName, p.Email, p.Role, p.Institution))
+                        .ToList();
+        }
+
+        public void UpdateStudent(StudentDTO studentDTO)
+        {
+            Student student = this._userRepository.GetStudentByName(studentDTO.Name);
+            student.Email = studentDTO.Email;
+            student.Role = studentDTO.Role;
+            student.Institution = studentDTO.Institution;
+
+            this._userRepository.UpdateStudent(student);
+        }
+
+        public void DeleteStudent(string id)
+        {
+            Student student = this._userRepository.GetStudentById(id);
+
+            this._userRepository.DeleteStudent(student);
+        }
+
         public Professor CreateProfessor(ProfessorDTO professorDTO)
         {
             Professor professor = new Professor(professorDTO.Name, professorDTO.Email,
@@ -72,5 +102,6 @@ namespace ProjectManagement.Domain.Services
                         .ToList();
         }
 
+       
     }
 }

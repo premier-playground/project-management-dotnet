@@ -183,7 +183,9 @@
   <ItemGroup>
     <Compile Include="DTO\ProfessorDTO.cs" />
     <Compile Include="DTO\ProfessorGetDTO.cs" />
+    <Compile Include="DTO\ProjectGetDTO.cs" />
     <Compile Include="DTO\ProjectDTO.cs" />
+    <Compile Include="DTO\StudentGetDTO.cs" />
     <Compile Include="DTO\StudentDTO.cs" />
     <Compile Include="DTO\StudentProjectAssociationDTO.cs" />
     <Compile Include="Mappers\ProjectMapper.cs" />
