@@ -12,7 +12,7 @@ namespace ProjectManagement.Web.Controllers
 {
     public class ProfessorController: ApiController
     {
-        private readonly UserService _userService;
+        private readonly IUserService _userService;
 
         public ProfessorController()
         {

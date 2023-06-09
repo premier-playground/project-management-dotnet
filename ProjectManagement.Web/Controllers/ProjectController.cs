@@ -14,7 +14,7 @@ namespace ProjectManagement.Web.Controllers
 {
     public class ProjectController: ApiController
     {
-        private readonly ProjectService _projectService;
+        private readonly IProjectService _projectService;
 
         public ProjectController()
         {

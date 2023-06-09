@@ -16,8 +16,8 @@ namespace ProjectManagement.Tests.ServicesTest
     [TestClass]
     public class ProjectServiceTest
     {
-        private readonly UserService _userService;
-        private readonly ProjectService _projectService;
+        private readonly IUserService _userService;
+        private readonly IProjectService _projectService;
 
         public ProjectServiceTest()
         {

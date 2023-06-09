@@ -15,7 +15,7 @@ namespace ProjectManagement.Web.Controllers
 {
     public class StudentController: ApiController
     {
-        private readonly UserService _userService;
+        private readonly IUserService _userService;
 
         public StudentController ()
         {
@@ -57,13 +57,14 @@ namespace ProjectManagement.Web.Controllers
             return Ok(student);
         }
 
+        [Route("api/student/{id}")]
         [HttpPut]
-        public IHttpActionResult UpdateStudent(StudentDTO studentDto)
+        public IHttpActionResult UpdateStudent(StudentDTO studentDto, string id)
         {
             IHttpActionResult httpActionResult;
             try
             {
-                _userService.UpdateStudent(studentDto);
+                _userService.UpdateStudent(studentDto, id);
                 httpActionResult = Ok(studentDto);
             }
             catch (Exception e)

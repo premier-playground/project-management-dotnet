@@ -11,7 +11,7 @@ using ProjectManagement.Repositories.Repositories;
 
 namespace ProjectManagement.Domain.Services
 {
-    public class ProjectService
+    public class ProjectService: IProjectService
     {
         private IProjectRepository _projectRepository;
         private IUserRepository _userRepository;

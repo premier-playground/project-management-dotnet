@@ -16,7 +16,7 @@ using ProjectManagement.Repositories.Repositories;
 namespace ProjectManagement.Domain.Services
 {
 
-    public class UserService
+    public class UserService: IUserService
     {
         private IUserRepository _userRepository;
         public UserService(DbContext localDbContext)
@@ -58,9 +58,9 @@ namespace ProjectManagement.Domain.Services
                         .ToList();
         }
 
-        public void UpdateStudent(StudentDTO studentDTO)
+        public void UpdateStudent(StudentDTO studentDTO, string studentId)
         {
-            Student student = this._userRepository.GetStudentByName(studentDTO.Name);
+            Student student = this._userRepository.GetStudentById(studentId);
             student.Email = studentDTO.Email;
             student.Role = studentDTO.Role;
             student.Institution = studentDTO.Institution;
@@ -71,7 +71,6 @@ namespace ProjectManagement.Domain.Services
         public void DeleteStudent(string id)
         {
             Student student = this._userRepository.GetStudentById(id);
-
             this._userRepository.DeleteStudent(student);
         }
 
@@ -110,6 +109,22 @@ namespace ProjectManagement.Domain.Services
                         .ToList();
         }
 
-       
+
+        public void UpdateProfessor(ProfessorDTO professorDto, string professorId)
+        {
+            Professor professor = this._userRepository.GetProfessorById(professorId);
+            professor.Email = professorDto.Email;
+            professor.Role = professorDto.Role;
+            professor.Degree = professorDto.Degree;
+            professor.Field = professorDto.Field;
+
+            this._userRepository.UpdateProfessor(professor);
+        }
+
+        public void DeleteProfessor(string id)
+        {
+            Professor professor = this._userRepository.GetProfessorById(id);
+            this._userRepository.DeleteProfessor(professor);
+        }
     }
 }
