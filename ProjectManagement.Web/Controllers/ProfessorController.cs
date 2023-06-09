@@ -33,10 +33,10 @@ namespace ProjectManagement.Web.Controllers
             IHttpActionResult httpActionResult;
             try
             {
-                Professor professor = _userService.CreateProfessor(professorDto);
+                ReturnProfessorDTO professor = _userService.CreateProfessor(professorDto);
                 httpActionResult = Ok(professor);
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 httpActionResult = BadRequest();
             }

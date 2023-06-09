@@ -15,57 +15,62 @@ namespace ProjectManagement.Domain.Services
     {
         private IProjectRepository _projectRepository;
         private IUserRepository _userRepository;
-        private ProjectMapper _mapper;
+        private CustomMapper _mapper;
 
         public ProjectService(DbContext locaDbContext)
         {
             _projectRepository = new ProjectRepository(locaDbContext);
             _userRepository = new UserRepository(locaDbContext);
-            _mapper = new ProjectMapper();
+            _mapper = new CustomMapper();
         }
 
-        public Project CreateProject(ProjectDTO projectDto)
+        public ReturnProjectDTO CreateProject(ProjectDTO projectDto)
         {
             Project newProject = null;
 
             Professor professor = _userRepository.GetProfessorById(projectDto.CoordinatorId);
+
             if (professor != null)
             {
                 Project project = new Project(projectDto.Name, projectDto.Description, professor);
                 newProject = _projectRepository.InsertProject(project);
             }
 
-            return newProject;
+            ReturnProjectDTO returnProject = this._mapper.Map<Project, ReturnProjectDTO>(newProject);
+
+            return returnProject;
         }
 
 
-        public Project AddStudentToProject(StudentProjectAssociationDTO studentProjectAssociationDTO, int projectId)
+        public ReturnProjectDTO AddStudentToProject(StudentProjectAssociationDTO studentProjectAssociationDTO, int projectId)
         {
             Project project = _projectRepository.GetProjectById(projectId);
 
-            project = _projectRepository.AddStudent(project.Id, studentProjectAssociationDTO.StudentId,
-                studentProjectAssociationDTO.Level);
+            project = _projectRepository.AddStudent(
+                project.Id, 
+                studentProjectAssociationDTO.StudentId,
+                studentProjectAssociationDTO.Level
+            );
 
-            return project;
+            return _mapper.Map<Project, ReturnProjectDTO>(project);
         }
 
-        public Project RemoveStudentFromProject(string studentId, int projectId)
+        public ReturnProjectDTO RemoveStudentFromProject(string studentId, int projectId)
         {
             var project = _projectRepository.RemoveStudent(projectId, studentId);
 
-            return project;
+            return _mapper.Map<Project, ReturnProjectDTO>(project);
         }
 
-        public Project UpdateProject(ProjectDTO projectDto, int projectId)
+
+        public ReturnProjectDTO UpdateProject(ProjectDTO projectDto, int projectId)
         {
             Professor coordinator = _userRepository.GetProfessorById(projectDto.CoordinatorId);
-            if (coordinator == null)
-            {
-                return _projectRepository.GetProjectById(projectId);
-            };
+            if (coordinator == null) { return GetProjectById(projectId); };
+
             Project project = new Project(projectDto.Name, projectDto.Description, coordinator);
             project = _projectRepository.UpdateProject(project, projectId);
-            return project;
+            return this._mapper.Map<Project, ReturnProjectDTO>(project);
         }
 
         public void DeleteProject(int projectId)
@@ -73,18 +78,18 @@ namespace ProjectManagement.Domain.Services
             _projectRepository.DeleteProject(projectId);
         }
 
-        public List<ProjectGetDTO> GetProjects()
+        public List<ReturnProjectDTO> GetProjects()
         {
             return _projectRepository.GetAllProjects()
-                .Select(p => new ProjectGetDTO(p.Id, p.Name, p.Description, p.Coordinator.Id))
+                .Select(p => _mapper.Map<Project, ReturnProjectDTO>(p))
                 .ToList();
         }
 
-        public ProjectGetDTO GetProjectById(int id)
+        public ReturnProjectDTO GetProjectById(int id)
         {
             Project p = _projectRepository.GetProjectById(id);
             if (p == null) return null;
-            return new ProjectGetDTO(p.Id, p.Name, p.Description, p.Coordinator.Id);
+            return _mapper.Map<Project, ReturnProjectDTO>(p);
         }
     }
 }

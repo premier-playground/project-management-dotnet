@@ -19,21 +19,14 @@ namespace ProjectManagement.Entities.Models
         public virtual Professor Coordinator { get; set; }
         public virtual ICollection<StudentProjectAssociation> StudentProjectAssociations { get; set; }
 
-        public Project(int id, string name, string description)
-        {
-            Id = id;
-            Name = name;
-            Description = description;
-            CreatedAt = DateTime.Now;
-            Coordinator = null;
-        }
 
         public Project(string name, string description, Professor coordinator)
         {
             Name = name;
             Description = description;
-            CreatedAt = DateTime.Now;
             Coordinator = coordinator;
+
+            CreatedAt = DateTime.Now;
             StudentProjectAssociations = new HashSet<StudentProjectAssociation>();
         }
 

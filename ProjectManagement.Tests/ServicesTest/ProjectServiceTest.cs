@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using ProjectManagement.Repositories.Contexts;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using ProjectManagement.Domain.DTO;
+using ProjectManagement.Domain.Mappers;
 using ProjectManagement.Tests.Utils;
 using ProjectManagement.Entities.Enums;
 using ProjectManagement.Entities.Models;
@@ -18,11 +19,13 @@ namespace ProjectManagement.Tests.ServicesTest
     {
         private readonly IUserService _userService;
         private readonly IProjectService _projectService;
+        private readonly CustomMapper _customMapper;
 
         public ProjectServiceTest()
         {
             _userService = new UserService(new LocalDBContext());
             _projectService = new ProjectService(new LocalDBContext());
+            _customMapper = new CustomMapper();
         }
 
         [TestCleanup()]
@@ -31,33 +34,31 @@ namespace ProjectManagement.Tests.ServicesTest
             TestUtil.CleanDatabase();
         }
 
-        public Professor CreateProfessor()
+        public ReturnProfessorDTO CreateProfessor()
         {
             var professor = _userService.CreateProfessor(new ProfessorDTO
             {
-                Name = "ProfessorX",
+                UserName = "ProfessorX",
                 Email = "professor_x@xmen.com",
                 Password = "123456",
-                Role = Role.PROFESSOR,
                 Degree = "Psychiatry",
                 Field = "Mind Reading"
             });
             return professor;
         }
 
-        public Student CreateStudent()
+        public ReturnStudentDTO CreateStudent()
         {
             return _userService.CreateStudent(new StudentDTO
             {
                 Email = "davi.sousa@ccc.ufcg.edu.br",
-                Name = "Davi",
+                UserName = "Davi",
                 Password = "123456",
-                Role = Role.STUDENT,
                 Institution = "UFCG"
             });
         }
 
-        public Project CreateProject(Professor professor)
+        public ReturnProjectDTO CreateProject(Professor professor)
         {
             ProjectDTO projectDTO = new ProjectDTO
             {
@@ -75,7 +76,7 @@ namespace ProjectManagement.Tests.ServicesTest
             var professor = CreateProfessor();
             Assert.IsNotNull(professor);
 
-            var project = CreateProject(professor);
+            var project = CreateProject(_customMapper.Map<ReturnProfessorDTO, Professor>(professor));
             Assert.IsNotNull(project.Coordinator);
             Assert.IsNotNull(project);
         }
@@ -99,7 +100,7 @@ namespace ProjectManagement.Tests.ServicesTest
             var professor = CreateProfessor();
             Assert.IsNotNull(professor);
 
-            var project = CreateProject(professor);
+            var project = CreateProject(_customMapper.Map<ReturnProfessorDTO, Professor>(professor));
             Assert.IsNotNull(project);
 
             var updatedProject = _projectService.UpdateProject(new ProjectDTO
@@ -118,7 +119,7 @@ namespace ProjectManagement.Tests.ServicesTest
             var professor = CreateProfessor();
             Assert.IsNotNull(professor);
 
-            var project = CreateProject(professor);
+            var project = CreateProject(_customMapper.Map<ReturnProfessorDTO, Professor>(professor));
             Assert.IsNotNull(project);
 
             var updatedProject = _projectService.UpdateProject(new ProjectDTO
@@ -140,7 +141,7 @@ namespace ProjectManagement.Tests.ServicesTest
             var createdStudent = CreateStudent();
             Assert.IsNotNull(createdStudent);
 
-            var project = CreateProject(professor);
+            var project = CreateProject(_customMapper.Map<ReturnProfessorDTO, Professor>(professor));
             Assert.IsNotNull(project);
 
             project = _projectService.AddStudentToProject(new StudentProjectAssociationDTO
@@ -162,7 +163,7 @@ namespace ProjectManagement.Tests.ServicesTest
             var createdStudent = CreateStudent();
             Assert.IsNotNull(createdStudent);
 
-            var project = CreateProject(professor);
+            var project = CreateProject(_customMapper.Map<ReturnProfessorDTO, Professor>(professor));
             Assert.IsNotNull(project);
 
             project = _projectService.AddStudentToProject(new StudentProjectAssociationDTO
@@ -182,7 +183,7 @@ namespace ProjectManagement.Tests.ServicesTest
             var createdStudent = CreateStudent();
             Assert.IsNotNull(createdStudent);
 
-            var project = CreateProject(professor);
+            var project = CreateProject(_customMapper.Map<ReturnProfessorDTO, Professor>(professor));
             Assert.IsNotNull(project);
 
             project = _projectService.AddStudentToProject(new StudentProjectAssociationDTO
@@ -209,7 +210,7 @@ namespace ProjectManagement.Tests.ServicesTest
             var createdStudent = CreateStudent();
             Assert.IsNotNull(createdStudent);
 
-            var project = CreateProject(professor);
+            var project = CreateProject(_customMapper.Map<ReturnProfessorDTO, Professor>(professor));
             Assert.IsNotNull(project);
 
             project = _projectService.RemoveStudentFromProject(createdStudent.Id, project.Id);
@@ -222,7 +223,7 @@ namespace ProjectManagement.Tests.ServicesTest
             var professor = CreateProfessor();
             Assert.IsNotNull(professor);
 
-            var project = CreateProject(professor);
+            var project = CreateProject(_customMapper.Map<ReturnProfessorDTO, Professor>(professor));
             Assert.IsNotNull(project);
 
             var getProject = _projectService.GetProjectById(project.Id);
@@ -242,7 +243,7 @@ namespace ProjectManagement.Tests.ServicesTest
             var professor = CreateProfessor();
             Assert.IsNotNull(professor);
 
-            var project = CreateProject(professor);
+            var project = CreateProject(_customMapper.Map<ReturnProfessorDTO, Professor>(professor));
             Assert.IsNotNull(project);
 
             var projects = _projectService.GetProjects();

@@ -10,12 +10,12 @@ namespace ProjectManagement.Domain.Services
 {
     public interface IUserService
     {
-        Student CreateStudent(StudentDTO studentDTO);
+        ReturnStudentDTO CreateStudent(StudentDTO studentDTO);
         StudentGetDTO GetStudentById(string id);
         List<StudentGetDTO> GetStudents();
         void UpdateStudent(StudentDTO studentDTO, string studentId);
         void DeleteStudent(string id);
-        Professor CreateProfessor(ProfessorDTO professorDTO);
+        ReturnProfessorDTO CreateProfessor(ProfessorDTO professorDTO);
         ProfessorGetDTO GetProfessorById(string id);
         List<ProfessorGetDTO> GetProfessors();
         void UpdateProfessor(ProfessorDTO professorDto, string professorId);

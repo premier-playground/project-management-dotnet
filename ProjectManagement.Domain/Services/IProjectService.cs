@@ -10,12 +10,12 @@ namespace ProjectManagement.Domain.Services
 {
     public interface IProjectService
     {
-        Project CreateProject(ProjectDTO projectDto);
-        Project AddStudentToProject(StudentProjectAssociationDTO studentProjectAssociationDTO, int projectId);
-        Project RemoveStudentFromProject(string studentId, int projectId);
-        Project UpdateProject(ProjectDTO projectDto, int projectId);
+        ReturnProjectDTO CreateProject(ProjectDTO projectDto);
+        ReturnProjectDTO AddStudentToProject(StudentProjectAssociationDTO studentProjectAssociationDTO, int projectId);
+        ReturnProjectDTO RemoveStudentFromProject(string studentId, int projectId);
+        ReturnProjectDTO UpdateProject(ProjectDTO projectDto, int projectId);
         void DeleteProject(int projectId);
-        List<ProjectGetDTO> GetProjects();
-        ProjectGetDTO GetProjectById(int id);
+        List<ReturnProjectDTO> GetProjects();
+        ReturnProjectDTO GetProjectById(int id);
     }
 }

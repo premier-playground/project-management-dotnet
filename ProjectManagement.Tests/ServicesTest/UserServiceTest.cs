@@ -29,27 +29,25 @@ namespace ProjectManagement.Tests.ServicesTest
             TestUtil.CleanDatabase();
         }
 
-        public Student CreateStudent()
+        public ReturnStudentDTO CreateStudent()
         {
-            StudentDTO studentDTO = new StudentDTO
+            var studentDTO = new StudentDTO
             {
                 Email = "davi.sousa@ccc.ufcg.edu.br",
-                Name = "Davi",
+                UserName = "Davi",
                 Password = "123456",
-                Role = Role.STUDENT,
                 Institution = "UFCG"
             };
             return _userService.CreateStudent(studentDTO);
         }
 
-        public Professor CreateProfessor()
+        public ReturnProfessorDTO CreateProfessor()
         {
             ProfessorDTO professorDto = new ProfessorDTO
             {
-                Name = "ProfessorX",
+                UserName = "ProfessorX",
                 Email = "professor_x@xmen.com",
                 Password = "123456",
-                Role = Role.PROFESSOR,
                 Degree = "Psychiatry",
                 Field = "Mind Reading"
             };

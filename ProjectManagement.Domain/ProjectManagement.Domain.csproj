@@ -181,14 +181,18 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DTO\ProfessorDTO.cs" />
     <Compile Include="DTO\ProfessorGetDTO.cs" />
     <Compile Include="DTO\ProjectGetDTO.cs" />
-    <Compile Include="DTO\ProjectDTO.cs" />
     <Compile Include="DTO\StudentGetDTO.cs" />
-    <Compile Include="DTO\StudentDTO.cs" />
-    <Compile Include="DTO\StudentProjectAssociationDTO.cs" />
-    <Compile Include="Mappers\ProjectMapper.cs" />
+    <Compile Include="DTO\CreateDTO\ProfessorDTO.cs" />
+    <Compile Include="DTO\CreateDTO\ProjectDTO.cs" />
+    <Compile Include="DTO\CreateDTO\StudentDTO.cs" />
+    <Compile Include="DTO\CreateDTO\StudentProjectAssociationDTO.cs" />
+    <Compile Include="DTO\ReturnDTO\ReturnProfessorDTO.cs" />
+    <Compile Include="DTO\ReturnDTO\ReturnProjectDTO.cs" />
+    <Compile Include="DTO\ReturnDTO\ReturnStudentDTO.cs" />
+    <Compile Include="DTO\ReturnDTO\ReturnStudentProjectAssociationDTO.cs" />
+    <Compile Include="Mappers\CustomMapper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\IProjectService.cs" />
     <Compile Include="Services\IUserService.cs" />
@@ -212,6 +216,7 @@
   <ItemGroup>
     <Folder Include="Interfaces\" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>

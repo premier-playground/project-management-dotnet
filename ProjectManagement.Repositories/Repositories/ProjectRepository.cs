@@ -42,7 +42,11 @@ namespace ProjectManagement.Repositories.Repositories
             Project newProject = null;
             using (var context = new LocalDBContext())
             {
-                var retrievedProject = context.Projects.FirstOrDefault(p => p.Id == projectId);
+                var retrievedProject = context.Projects
+                    .Include(p => p.Coordinator)
+                    .Include(p => p.StudentProjectAssociations)
+                    .Include(p => p.StudentProjectAssociations.Select(spa => spa.Student))
+                    .FirstOrDefault(p => p.Id == projectId);
                 retrievedProject.Name = project.Name;
                 retrievedProject.Description = project.Description;
 
@@ -70,7 +74,11 @@ namespace ProjectManagement.Repositories.Repositories
             List<Project> projects = new List<Project>();
             using (var localDbContext = new LocalDBContext())
             {
-                projects = localDbContext.Projects.Include(p => p.Coordinator).ToList();
+                projects = localDbContext.Projects
+                    .Include(p => p.Coordinator)
+                    .Include(p => p.StudentProjectAssociations)
+                    .Include(p => p.StudentProjectAssociations.Select(spa => spa.Student))
+                    .ToList();
             }
             return projects;
         }
@@ -80,7 +88,11 @@ namespace ProjectManagement.Repositories.Repositories
             Project project = null;
             using (var context = new LocalDBContext())
             {
-                project = context.Projects.Include(p => p.Coordinator).FirstOrDefault(p => p.Id == id);
+                project = context.Projects
+                    .Include(p => p.Coordinator)
+                    .Include(p => p.StudentProjectAssociations)
+                    .Include(p => p.StudentProjectAssociations.Select(spa => spa.Student))
+                    .FirstOrDefault(p => p.Id == id);
             }
             return project;
         }

@@ -22,13 +22,10 @@ namespace ProjectManagement.Entities.Models
         public DateTime AddedAt { get; set; }
 
 
-        //public StudentProjectAssociation(Student student, Level level, DateTime AddedAt)
         public StudentProjectAssociation(Level level)
         {
             this.Level = level;
-            //this.AddedAt = AddedAt;
             this.AddedAt = DateTime.Now;
-            //this.Project = null;
             this.Student = null;
         }
 

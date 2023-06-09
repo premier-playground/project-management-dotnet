@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using ProjectManagement.Domain.DTO;
+using ProjectManagement.Domain.Mappers;
 using ProjectManagement.Entities.Models;
 using ProjectManagement.Repositories;
 using ProjectManagement.Repositories.Contexts;
@@ -19,42 +20,39 @@ namespace ProjectManagement.Domain.Services
     public class UserService: IUserService
     {
         private IUserRepository _userRepository;
+        private CustomMapper _mapper;
         public UserService(DbContext localDbContext)
         {
             _userRepository = new UserRepository(localDbContext);
+            _mapper = new CustomMapper();
         }
 
-        public Student CreateStudent(StudentDTO studentDTO)
+        public ReturnStudentDTO CreateStudent(StudentDTO studentDTO)
         {
-            Student student = new Student(studentDTO.Name, studentDTO.Email, studentDTO.Role, studentDTO.Institution);
+            Student student = new Student(studentDTO.UserName, studentDTO.Email, studentDTO.Institution);
 
-            var store = new ApplicationUserStore(new LocalDBContext());
-            var userManager = new ApplicationUserManager(store);
-            var result = userManager.Create(student, studentDTO.Password);
+            var userManager = this.GetApplicationUserManager();
+
+            IdentityResult result = userManager.Create(student, studentDTO.Password);
 
             if (!result.Succeeded) return null;
 
-            var userToAddRole = userManager.FindByName(student.UserName);
-            if (userToAddRole == null) return null;
+            bool setRoleSuccessed = this.SetUpUserRole(userManager, student, "STUDENT");
 
-            var claimResult = userManager.AddClaim(student.Id, new Claim("role", "STUDENT"));
-            if (!claimResult.Succeeded) return null;
-
-            var identityResult = userManager.AddToRole(userToAddRole.Id, "STUDENT");
-            return identityResult.Succeeded ? student : null;
+            return setRoleSuccessed ? this._mapper.Map<Student, ReturnStudentDTO>(student) : null;
         }
 
         public StudentGetDTO GetStudentById(string id)
         {
             var p = _userRepository.GetStudentById(id);
             if (p == null) return null;
-            return new StudentGetDTO(p.Id, p.UserName, p.Email, p.Role, p.Institution);
+            return new StudentGetDTO(p.Id, p.UserName, p.Email, p.Institution);
         }
 
         public List<StudentGetDTO> GetStudents()
         {
             return _userRepository.GetAllStudents()
-                        .Select(p => new StudentGetDTO(p.Id, p.UserName, p.Email, p.Role, p.Institution))
+                        .Select(p => new StudentGetDTO(p.Id, p.UserName, p.Email,  p.Institution))
                         .ToList();
         }
 
@@ -62,7 +60,6 @@ namespace ProjectManagement.Domain.Services
         {
             Student student = this._userRepository.GetStudentById(studentId);
             student.Email = studentDTO.Email;
-            student.Role = studentDTO.Role;
             student.Institution = studentDTO.Institution;
 
             this._userRepository.UpdateStudent(student);
@@ -74,38 +71,32 @@ namespace ProjectManagement.Domain.Services
             this._userRepository.DeleteStudent(student);
         }
 
-        public Professor CreateProfessor(ProfessorDTO professorDTO)
+        public ReturnProfessorDTO CreateProfessor(ProfessorDTO professorDTO)
         {
-            Professor professor = new Professor(professorDTO.Name, professorDTO.Email,
-                professorDTO.Role, professorDTO.Field, professorDTO.Degree);
+            Professor professor = new Professor(professorDTO.UserName, professorDTO.Email, professorDTO.Field, professorDTO.Degree);
 
-            var store = new ApplicationUserStore(new LocalDBContext());
-            var userManager = new ApplicationUserManager(store);
+            var userManager = this.GetApplicationUserManager();
+
             var result = userManager.Create(professor, professorDTO.Password);
 
             if (!result.Succeeded) return null;
 
-            var userToAddRole = userManager.FindByName(professor.UserName);
-            if (userToAddRole == null) return null;
+            bool setRoleSuccessed = this.SetUpUserRole(userManager, professor, "PROFESSOR");
 
-            var claimResult = userManager.AddClaim(professor.Id, new Claim("role", "PROFESSOR"));
-            if (!claimResult.Succeeded) return null;
-
-            var identityResult = userManager.AddToRole(userToAddRole.Id, "PROFESSOR");
-            return identityResult.Succeeded ? professor : null;
+            return setRoleSuccessed ? this._mapper.Map<Professor, ReturnProfessorDTO>(professor) : null;
         }
 
         public ProfessorGetDTO GetProfessorById(string id)
         {
             var p = _userRepository.GetProfessorById(id);
             if (p == null) return null;
-            return new ProfessorGetDTO(p.Id, p.UserName, p.Email, p.Role, p.Field, p.Degree);
+            return new ProfessorGetDTO(p.Id, p.UserName, p.Email,p.Field, p.Degree);
         }
 
         public List<ProfessorGetDTO> GetProfessors()
         {
             return _userRepository.GetAllProfessors()
-                        .Select(p => new ProfessorGetDTO(p.Id, p.UserName, p.Email, p.Role, p.Field, p.Degree))
+                        .Select(p => new ProfessorGetDTO(p.Id, p.UserName, p.Email, p.Field, p.Degree))
                         .ToList();
         }
 
@@ -114,7 +105,6 @@ namespace ProjectManagement.Domain.Services
         {
             Professor professor = this._userRepository.GetProfessorById(professorId);
             professor.Email = professorDto.Email;
-            professor.Role = professorDto.Role;
             professor.Degree = professorDto.Degree;
             professor.Field = professorDto.Field;
 
@@ -125,6 +115,29 @@ namespace ProjectManagement.Domain.Services
         {
             Professor professor = this._userRepository.GetProfessorById(id);
             this._userRepository.DeleteProfessor(professor);
+        }
+
+        private ApplicationUserManager GetApplicationUserManager()
+        {
+            ApplicationUserStore store = new ApplicationUserStore(new LocalDBContext());
+
+            return new ApplicationUserManager(store);
+        }
+
+
+        private bool SetUpUserRole(ApplicationUserManager userManager, User user, String role)
+        {
+            User userToAddRole = userManager.FindByName(user.UserName);
+
+            if (userToAddRole == null) return false;
+
+            IdentityResult claimResult = userManager.AddClaim(user.Id, new Claim("role", role));
+
+            if (!claimResult.Succeeded) return false;
+
+            IdentityResult identityResult = userManager.AddToRole(userToAddRole.Id, role);
+
+            return identityResult.Succeeded ? true : false;
         }
     }
 }
