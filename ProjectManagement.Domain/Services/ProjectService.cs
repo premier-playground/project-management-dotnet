@@ -59,6 +59,10 @@ namespace ProjectManagement.Domain.Services
         public Project UpdateProject(ProjectDTO projectDto, int projectId)
         {
             Professor coordinator = _userRepository.GetProfessorById(projectDto.CoordinatorId);
+            if (coordinator == null)
+            {
+                return _projectRepository.GetProjectById(projectId);
+            };
             Project project = new Project(projectDto.Name, projectDto.Description, coordinator);
             project = _projectRepository.UpdateProject(project, projectId);
             return project;
@@ -79,6 +83,7 @@ namespace ProjectManagement.Domain.Services
         public ProjectGetDTO GetProjectById(int id)
         {
             Project p = _projectRepository.GetProjectById(id);
+            if (p == null) return null;
             return new ProjectGetDTO(p.Id, p.Name, p.Description, p.Coordinator.Id);
         }
     }

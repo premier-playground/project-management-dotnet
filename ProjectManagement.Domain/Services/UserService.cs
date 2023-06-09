@@ -47,6 +47,7 @@ namespace ProjectManagement.Domain.Services
         public StudentGetDTO GetStudentById(string id)
         {
             var p = _userRepository.GetStudentById(id);
+            if (p == null) return null;
             return new StudentGetDTO(p.Id, p.UserName, p.Email, p.Role, p.Institution);
         }
 
@@ -93,6 +94,13 @@ namespace ProjectManagement.Domain.Services
 
             var identityResult = userManager.AddToRole(userToAddRole.Id, "PROFESSOR");
             return identityResult.Succeeded ? professor : null;
+        }
+
+        public ProfessorGetDTO GetProfessorById(string id)
+        {
+            var p = _userRepository.GetProfessorById(id);
+            if (p == null) return null;
+            return new ProfessorGetDTO(p.Id, p.UserName, p.Email, p.Role, p.Field, p.Degree);
         }
 
         public List<ProfessorGetDTO> GetProfessors()

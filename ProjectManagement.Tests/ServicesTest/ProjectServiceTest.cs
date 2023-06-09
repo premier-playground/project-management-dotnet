@@ -9,6 +9,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using ProjectManagement.Domain.DTO;
 using ProjectManagement.Tests.Utils;
 using ProjectManagement.Entities.Enums;
+using ProjectManagement.Entities.Models;
 
 namespace ProjectManagement.Tests.ServicesTest
 {
@@ -30,8 +31,7 @@ namespace ProjectManagement.Tests.ServicesTest
             TestUtil.CleanDatabase();
         }
 
-        [TestMethod]
-        public void SuccessfulCreateProject()
+        public Professor CreateProfessor()
         {
             var professor = _userService.CreateProfessor(new ProfessorDTO
             {
@@ -42,15 +42,40 @@ namespace ProjectManagement.Tests.ServicesTest
                 Degree = "Psychiatry",
                 Field = "Mind Reading"
             });
-            Assert.IsNotNull(professor);
+            return professor;
+        }
 
+        public Student CreateStudent()
+        {
+            return _userService.CreateStudent(new StudentDTO
+            {
+                Email = "davi.sousa@ccc.ufcg.edu.br",
+                Name = "Davi",
+                Password = "123456",
+                Role = Role.STUDENT,
+                Institution = "UFCG"
+            });
+        }
+
+        public Project CreateProject(Professor professor)
+        {
             ProjectDTO projectDTO = new ProjectDTO
             {
                 Name = "Project 1",
                 Description = "Description 1",
                 CoordinatorId = professor.Id
             };
-            var project = _projectService.CreateProject(projectDTO);
+
+            return _projectService.CreateProject(projectDTO);
+        } 
+
+        [TestMethod]
+        public void SuccessfulCreateProject()
+        {
+            var professor = CreateProfessor();
+            Assert.IsNotNull(professor);
+
+            var project = CreateProject(professor);
             Assert.IsNotNull(project.Coordinator);
             Assert.IsNotNull(project);
         }
@@ -69,45 +94,166 @@ namespace ProjectManagement.Tests.ServicesTest
         }
 
         [TestMethod]
-        public void SuccessfulAddStudentToProject()
+        public void SuccessfulUpdateProject()
         {
-            var professor = _userService.CreateProfessor(new ProfessorDTO
-            {
-                Name = "ProfessorX",
-                Email = "professor_x@xmen.com",
-                Password = "123456",
-                Role = Role.PROFESSOR,
-                Degree = "Psychiatry",
-                Field = "Mind Reading"
-            });
+            var professor = CreateProfessor();
             Assert.IsNotNull(professor);
 
-            var createdStudent = _userService.CreateStudent(new StudentDTO
+            var project = CreateProject(professor);
+            Assert.IsNotNull(project);
+
+            var updatedProject = _projectService.UpdateProject(new ProjectDTO
             {
-                Email = "davi.sousa@ccc.ufcg.edu.br",
-                Name = "Davi",
-                Password = "123456",
-                Role = Role.STUDENT,
-                Institution = "UFCG"
-            });
+                Name = "updated project",
+                Description = project.Description,
+                CoordinatorId = project.Coordinator.Id
+            }, project.Id);
+            Assert.IsNotNull(updatedProject);
+            Assert.IsTrue(updatedProject.Name.Equals("updated project"));
+        }
+
+        [TestMethod]
+        public void UnsuccessfulUpdateProject()
+        {
+            var professor = CreateProfessor();
+            Assert.IsNotNull(professor);
+
+            var project = CreateProject(professor);
+            Assert.IsNotNull(project);
+
+            var updatedProject = _projectService.UpdateProject(new ProjectDTO
+            {
+                Name = "updated project",
+                Description = project.Description,
+                CoordinatorId = new Guid().ToString()
+            }, project.Id);
+            Assert.IsNotNull(updatedProject);
+            Assert.IsTrue(updatedProject.Name.Equals(project.Name));
+        }
+
+        [TestMethod]
+        public void SuccessfulAddStudentToProject()
+        {
+            var professor = CreateProfessor();
+            Assert.IsNotNull(professor);
+
+            var createdStudent = CreateStudent();
             Assert.IsNotNull(createdStudent);
 
-            ProjectDTO projectDTO = new ProjectDTO
-            {
-                Name = "Project 1",
-                Description = "Description 1",
-                CoordinatorId = professor.Id
-            };
-            var project = _projectService.CreateProject(projectDTO);
-            Assert.IsNotNull(projectDTO);
+            var project = CreateProject(professor);
+            Assert.IsNotNull(project);
 
             project = _projectService.AddStudentToProject(new StudentProjectAssociationDTO
             {
                 StudentId = createdStudent.Id,
                 Level = Level.JUNIOR
             }, project.Id);
+
             Assert.IsNotNull(project);
             Assert.IsTrue(project.StudentProjectAssociations.Any());
+        }
+
+        [TestMethod]
+        public void UnsuccessfulAddStudentToProject()
+        {
+            var professor = CreateProfessor();
+            Assert.IsNotNull(professor);
+
+            var createdStudent = CreateStudent();
+            Assert.IsNotNull(createdStudent);
+
+            var project = CreateProject(professor);
+            Assert.IsNotNull(project);
+
+            project = _projectService.AddStudentToProject(new StudentProjectAssociationDTO
+            {
+                StudentId = "123456",
+                Level = Level.JUNIOR
+            }, project.Id);
+            Assert.IsNull(project);
+        }
+
+        [TestMethod]
+        public void SuccessfulRemoveStudentToProject()
+        {
+            var professor = CreateProfessor();
+            Assert.IsNotNull(professor);
+
+            var createdStudent = CreateStudent();
+            Assert.IsNotNull(createdStudent);
+
+            var project = CreateProject(professor);
+            Assert.IsNotNull(project);
+
+            project = _projectService.AddStudentToProject(new StudentProjectAssociationDTO
+            {
+                StudentId = createdStudent.Id,
+                Level = Level.JUNIOR
+            }, project.Id);
+
+            Assert.IsNotNull(project);
+            Assert.IsTrue(project.StudentProjectAssociations.Any());
+
+            var studentsAssociationSize = project.StudentProjectAssociations.Count;
+            project = _projectService.RemoveStudentFromProject(createdStudent.Id, project.Id);
+            Assert.IsNotNull(project);
+            Assert.IsTrue(project.StudentProjectAssociations.Count < studentsAssociationSize);
+        }
+
+        [TestMethod]
+        public void UnsuccessfulRemoveStudentToProject()
+        {
+            var professor = CreateProfessor();
+            Assert.IsNotNull(professor);
+
+            var createdStudent = CreateStudent();
+            Assert.IsNotNull(createdStudent);
+
+            var project = CreateProject(professor);
+            Assert.IsNotNull(project);
+
+            project = _projectService.RemoveStudentFromProject(createdStudent.Id, project.Id);
+            Assert.IsNull(project);
+        }
+
+        [TestMethod]
+        public void SuccessfulGetProjectById()
+        {
+            var professor = CreateProfessor();
+            Assert.IsNotNull(professor);
+
+            var project = CreateProject(professor);
+            Assert.IsNotNull(project);
+
+            var getProject = _projectService.GetProjectById(project.Id);
+            Assert.IsNotNull(getProject);
+        }
+
+        [TestMethod]
+        public void UnsuccessfulGetProjectById()
+        {
+            var getProject = _projectService.GetProjectById(9999);
+            Assert.IsNull(getProject);
+        }
+
+        [TestMethod]
+        public void SuccessfulGetProjectsNotEmpty()
+        {
+            var professor = CreateProfessor();
+            Assert.IsNotNull(professor);
+
+            var project = CreateProject(professor);
+            Assert.IsNotNull(project);
+
+            var projects = _projectService.GetProjects();
+            Assert.IsTrue(projects.Count > 0);
+        }
+
+        [TestMethod]
+        public void SuccessfulGetProjectsEmpty()
+        {
+            var projects = _projectService.GetProjects();
+            Assert.IsTrue(projects.Count == 0);
         }
     }
 }

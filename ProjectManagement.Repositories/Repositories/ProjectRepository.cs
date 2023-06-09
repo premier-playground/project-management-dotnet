@@ -133,6 +133,7 @@ namespace ProjectManagement.Repositories.Repositories
                         spa.Student.Id == retrievedStudent.Id);
                 if (studentProjectAssociation == null) return null;
 
+                context.StudentProjectAssociations.Remove(studentProjectAssociation);
                 retrievedProject.StudentProjectAssociations.Remove(studentProjectAssociation);
                 project = context.Projects
                     .Include(p => p.Coordinator)

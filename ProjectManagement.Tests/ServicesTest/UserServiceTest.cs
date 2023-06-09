@@ -29,24 +29,7 @@ namespace ProjectManagement.Tests.ServicesTest
             TestUtil.CleanDatabase();
         }
 
-        [TestMethod]
-        public void SuccessfulCreateStudent()
-        {
-            StudentDTO studentDTO = new StudentDTO
-            {
-                Email = "davi.sousa@ccc.ufcg.edu.br",
-                Name = "Davi", 
-                Password = "123456",
-                Role = Role.STUDENT, 
-                Institution = "UFCG"
-            };
-
-            var createdStudent = _userService.CreateStudent(studentDTO);
-            Assert.IsNotNull(createdStudent);
-        }
-
-        [TestMethod]
-        public void UnsuccessfulCreateStudent()
+        public Student CreateStudent()
         {
             StudentDTO studentDTO = new StudentDTO
             {
@@ -56,12 +39,10 @@ namespace ProjectManagement.Tests.ServicesTest
                 Role = Role.STUDENT,
                 Institution = "UFCG"
             };
-            Assert.IsNotNull(_userService.CreateStudent(studentDTO));
-            Assert.IsNull(_userService.CreateStudent(studentDTO));
+            return _userService.CreateStudent(studentDTO);
         }
 
-        [TestMethod]
-        public void SuccessfulCreateProfessor()
+        public Professor CreateProfessor()
         {
             ProfessorDTO professorDto = new ProfessorDTO
             {
@@ -72,25 +53,101 @@ namespace ProjectManagement.Tests.ServicesTest
                 Degree = "Psychiatry",
                 Field = "Mind Reading"
             };
-            var createdProfessor = _userService.CreateProfessor(professorDto);
+            return _userService.CreateProfessor(professorDto);
+        }
+
+        [TestMethod]
+        public void SuccessfulCreateStudent()
+        {
+            var createdStudent = CreateStudent();
+            Assert.IsNotNull(createdStudent);
+        }
+
+        [TestMethod]
+        public void UnsuccessfulCreateStudent()
+        {
+            var student = CreateStudent();
+            Assert.IsNotNull(student);
+            Assert.IsNull(CreateStudent());
+        }
+
+        [TestMethod]
+        public void SuccessfulCreateProfessor()
+        {
+            var createdProfessor = CreateProfessor();
             Assert.IsNotNull(createdProfessor);
         }
 
         [TestMethod]
         public void UnsuccessfulCreateProfessor()
         {
-            ProfessorDTO professorDto = new ProfessorDTO
-            {
-                Name = "ProfessorX",
-                Email = "professor_x@xmen.com",
-                Password = "123456",
-                Role = Role.PROFESSOR,
-                Degree = "Psychiatry",
-                Field = "Mind Reading"
-            };
-            var createdProfessor = _userService.CreateProfessor(professorDto);
+            var createdProfessor = CreateProfessor();
             Assert.IsNotNull(createdProfessor);
-            Assert.IsNull(_userService.CreateProfessor(professorDto));
+            Assert.IsNull(CreateProfessor());
+        }
+
+        [TestMethod]
+        public void SuccessfulGetStudentById()
+        {
+            var createdStudent = CreateStudent();
+            Assert.IsNotNull(createdStudent);
+            var getStudent = _userService.GetStudentById(createdStudent.Id);
+            Assert.IsNotNull(getStudent);
+        }
+
+        [TestMethod]
+        public void UnsuccessfulGetStudentById()
+        {
+            var getStudent = _userService.GetStudentById(new Guid().ToString());
+            Assert.IsNull(getStudent);
+        }
+
+        [TestMethod]
+        public void SuccessfulGetProfessorById()
+        {
+            var createdProfessor = CreateProfessor();
+            Assert.IsNotNull(createdProfessor);
+            var getProfessor = _userService.GetProfessorById(createdProfessor.Id);
+            Assert.IsNotNull(getProfessor);
+        }
+
+        [TestMethod]
+        public void UnsuccessfulGetProfessorById()
+        {
+            var getProfessor = _userService.GetProfessorById(new Guid().ToString());
+            Assert.IsNull(getProfessor);
+        }
+
+        [TestMethod]
+        public void SuccessfulGetStudentsNotEmpty()
+        {
+            var createdStudent = CreateStudent();
+            Assert.IsNotNull(createdStudent);
+            var students = _userService.GetStudents();
+            Assert.IsTrue(students.Count > 0);
+        }
+
+        [TestMethod]
+        public void SuccessfulGetStudentsEmpty()
+        {
+            var students = _userService.GetStudents();
+            Assert.IsTrue(students.Count == 0);
+        }
+
+        [TestMethod]
+        public void SuccessfulGetProfessorsNotEmpty()
+        {
+            var createdProfessor = CreateProfessor();
+            Assert.IsNotNull(createdProfessor);
+            var professors = _userService.GetProfessors();
+            Assert.IsTrue(professors.Count > 0);
+        }
+
+        [TestMethod]
+        public void SuccessfulGetProfessorsEmpty()
+        {
+            var professors = _userService.GetProfessors();
+            Assert.IsTrue(professors.Count == 0);
         }
     }
 }
