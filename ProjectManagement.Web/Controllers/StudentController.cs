@@ -1,19 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
 using System.Web.Http;
-using ProjectManagement.Domain.Services;
-using ProjectManagement.Entities.Enums;
-using ProjectManagement.Entities.Models;
-using ProjectManagement.Repositories;
-using ProjectManagement.Repositories.Contexts;
-using ProjectManagement.Repositories.Repositories;
 using ProjectManagement.Domain.DTO;
+using ProjectManagement.Domain.Services;
+using ProjectManagement.Repositories.Contexts;
 
- namespace ProjectManagement.Web.Controllers
- {
-     public class StudentController : ApiController
+namespace ProjectManagement.Web.Controllers
+{
+    public class StudentController : ApiController
      {
          private readonly IUserService _userService;
 
@@ -21,8 +14,12 @@ using ProjectManagement.Domain.DTO;
          {
              this._userService = new UserService(new LocalDBContext());
          }
+         public StudentController(IUserService userService)
+         {
+             this._userService = userService;
+         }
 
-         [HttpPost]
+        [HttpPost]
          [AllowAnonymous]
          public IHttpActionResult CreateStudent(StudentDTO studentDto)
          {
